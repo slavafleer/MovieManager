@@ -1,4 +1,4 @@
-package com.slavafleer.moviemanager;
+package com.slavafleer.moviemanager.asynctask;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.slavafleer.moviemanager.R;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;

@@ -1,4 +1,4 @@
-package com.slavafleer.moviemanager;
+package com.slavafleer.moviemanager.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.slavafleer.moviemanager.Constants;
+import com.slavafleer.moviemanager.asynctask.DownloadingPictureByUrlAsyncTask;
+import com.slavafleer.moviemanager.R;
 
 import java.net.MalformedURLException;
 import java.net.URL;

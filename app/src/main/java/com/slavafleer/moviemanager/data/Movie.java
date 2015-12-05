@@ -1,4 +1,4 @@
-package com.slavafleer.moviemanager;
+package com.slavafleer.moviemanager.data;
 
 public class Movie {
 

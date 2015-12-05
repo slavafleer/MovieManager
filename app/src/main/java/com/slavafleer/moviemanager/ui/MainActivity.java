@@ -6,15 +6,21 @@
  * filling movie description by user himself.
  */
 
-package com.slavafleer.moviemanager;
+package com.slavafleer.moviemanager.ui;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+
+import com.slavafleer.moviemanager.Constants;
+import com.slavafleer.moviemanager.R;
+import com.slavafleer.moviemanager.data.Movie;
 
 import java.util.ArrayList;
 
@@ -69,9 +75,8 @@ public class MainActivity extends ListActivity {
 
     // PlusIcon on click actions.
     public void imageViewPlusIcon_onClick(View view) {
-        Intent intent = new Intent(this, EditorActivity.class);
-        intent.putExtra(Constants.KEY_ID, Constants.VALUE_NEW_MOVIE);
-        startActivityForResult(intent, REQUEST_EDITOR);
+        // Open Alert Dialog for choosing adding new movie mode: manual or via internet.
+        openDialogForPlusIcon();
     }
 
     // On Item click transferring to Editor Screen.
@@ -86,4 +91,33 @@ public class MainActivity extends ListActivity {
         startActivityForResult(intent, REQUEST_EDITOR);
     }
 
+    // Open Alert Dialog on Plus Icon clicking for choosing
+    // adding new movie mode: manual or via internet.
+    private void openDialogForPlusIcon() {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.main_dialog_plus_icon_title)
+                .setMessage(R.string.main_dialog_plus_icon_message)
+                .setPositiveButton(R.string.main_dialog_plus_icon_positive_button_label,
+                        new DialogInterface.OnClickListener() {
+                    // On manual open Editor Screen.
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+                        intent.putExtra(Constants.KEY_ID, Constants.VALUE_NEW_MOVIE);
+                        startActivityForResult(intent, REQUEST_EDITOR);
+                    }
+                })
+                .setNegativeButton(R.string.main_dialog_plus_icon_negative_button_label,
+                        new DialogInterface.OnClickListener() {
+                    // On via internet open search screen.
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setNeutralButton(R.string.main_dialog_plus_icon_neutral_button_label, null)
+                .create();
+        dialog.setCancelable(false);
+        dialog.show();
+    }
 }

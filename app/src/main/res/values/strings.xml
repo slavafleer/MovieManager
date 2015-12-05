@@ -6,6 +6,13 @@
     <string name="main_empty_list_text">You have no any movie\nin your list.\nPress on Plus Icon below\nfor adding a new movie.</string>
     <string name="editor_textview_subject_label">Subject:</string>
 
+    <!-- Alert Dialog for Plus Icon -->
+    <string name="main_dialog_plus_icon_title">Add a new movie:</string>
+    <string name="main_dialog_plus_icon_message">Choose between manual and internet search options.</string>
+    <string name="main_dialog_plus_icon_positive_button_label">Manual</string>
+    <string name="main_dialog_plus_icon_negative_button_label">Search</string>
+    <string name="main_dialog_plus_icon_neutral_button_label">Abort</string>
+
     <!-- Editor Activity -->
     <string name="editor_textview_body_label">Body:</string>
     <string name="editor_textview_url_label">URL</string>
@@ -16,4 +23,5 @@
     <!-- Toast messages -->
     <string name="editor_toast_no_subject">Subject must be filled.</string>
     <string name="editor_toast_incorrect_url">You entered incorrect Url.</string>
+
 </resources>
