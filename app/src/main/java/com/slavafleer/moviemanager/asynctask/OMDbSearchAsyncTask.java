@@ -3,13 +3,23 @@ package com.slavafleer.moviemanager.asynctask;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.slavafleer.moviemanager.R;
 
-import java.io.IOException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * This Async Task searches in OMDb data for wanted movie title
@@ -19,6 +29,9 @@ public class OMDbSearchAsyncTask extends AsyncTask<URL, Void, String> {
 
     private Activity mActivity;
     private ProgressBar mProgressBarSearch;
+    private ArrayAdapter<String> adapter;
+    private ArrayList<String> mMovies = new ArrayList<>();
+    private ListView mListViewMovies;
 
     public OMDbSearchAsyncTask(Activity activity) {
         mActivity = activity;
@@ -28,7 +41,12 @@ public class OMDbSearchAsyncTask extends AsyncTask<URL, Void, String> {
     @Override
     protected void onPreExecute() {
         mProgressBarSearch = (ProgressBar)mActivity.findViewById(R.id.progressBarSearch);
+        mListViewMovies = (ListView)mActivity.findViewById(android.R.id.list);
+
         mProgressBarSearch.setVisibility(View.VISIBLE);
+
+        adapter = new ArrayAdapter<>(mActivity, android.R.layout.simple_list_item_1, mMovies);
+        mListViewMovies.setAdapter(adapter);
     }
 
     @Override
@@ -39,10 +57,42 @@ public class OMDbSearchAsyncTask extends AsyncTask<URL, Void, String> {
             int httpResponseCode = connection.getResponseCode();
 
             if(httpResponseCode != HttpURLConnection.HTTP_OK) {
-                return "Error: " + connection.
+                return "Error Code: " + httpResponseCode +
+                        "\nError Message: " + connection.getResponseMessage();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+            InputStream inputStream = connection.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            String result = "";
+
+            String oneLine = bufferedReader.readLine();
+
+            while(oneLine != null) {
+                result += oneLine + "\n";
+                oneLine = bufferedReader.readLine();
+            }
+
+            return result;
+        } catch (Exception e) {
+            return "Error: " + e.getMessage();
         }
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            JSONArray search = jsonObject.getJSONArray("Search");
+
+            for(int i = 0; i < search.length(); i++) {
+                mMovies.add(search.getJSONObject(i).getString("Title"));
+            }
+            adapter.notifyDataSetChanged();
+        } catch (JSONException e) {
+            Toast.makeText(mActivity, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+        mProgressBarSearch.setVisibility(View.INVISIBLE);
     }
 }
