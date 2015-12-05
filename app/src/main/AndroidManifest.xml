@@ -19,6 +19,8 @@
         </activity>
         <activity android:name=".ui.EditorActivity">
         </activity>
+        <activity android:name=".ui.SearchActivity">
+        </activity>
     </application>
 
 </manifest>

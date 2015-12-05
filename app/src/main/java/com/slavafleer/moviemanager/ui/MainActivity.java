@@ -27,6 +27,7 @@ import java.util.ArrayList;
 public class MainActivity extends ListActivity {
 
     private final static int REQUEST_EDITOR = 1;
+    private final static int REQUEST_SEARCH = 2;
 
     // Movies Collection.
     private static ArrayList<Movie> mMoviesList = new ArrayList<>();
@@ -54,6 +55,7 @@ public class MainActivity extends ListActivity {
             return;
         }
 
+        // When returning from Editor Screen, add/update a movie in the list.
         if (requestCode == REQUEST_EDITOR) {
             int id = data.getIntExtra(Constants.KEY_ID, 0);
             String subject = data.getStringExtra(Constants.KEY_SUBJECT);
@@ -70,6 +72,10 @@ public class MainActivity extends ListActivity {
                 movie.setUrl(url);
             }
             mArrayAdapter.notifyDataSetChanged();
+        }
+        // On returning from Search screen, add new movie in the list.
+        else if(requestCode == REQUEST_SEARCH) {
+
         }
     }
 
@@ -99,7 +105,7 @@ public class MainActivity extends ListActivity {
                 .setMessage(R.string.main_dialog_plus_icon_message)
                 .setPositiveButton(R.string.main_dialog_plus_icon_positive_button_label,
                         new DialogInterface.OnClickListener() {
-                    // On manual open Editor Screen.
+                    // On manual -  open Editor Screen.
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(MainActivity.this, EditorActivity.class);
@@ -109,10 +115,11 @@ public class MainActivity extends ListActivity {
                 })
                 .setNegativeButton(R.string.main_dialog_plus_icon_negative_button_label,
                         new DialogInterface.OnClickListener() {
-                    // On via internet open search screen.
+                    // On search - open search screen.
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                        startActivityForResult(intent, REQUEST_SEARCH);
                     }
                 })
                 .setNeutralButton(R.string.main_dialog_plus_icon_neutral_button_label, null)
