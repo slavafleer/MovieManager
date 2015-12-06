@@ -9,6 +9,7 @@ public class Constants {
     public final static String KEY_SUBJECT = "subject";
     public final static String KEY_BODY = "body";
     public final static String KEY_URL = "url";
+    public final static String KEY_POSITION = "position";
 
-    public final static int VALUE_NEW_MOVIE = 0;
+    public final static String VALUE_NEW_MOVIE = "0";
 }

@@ -9,14 +9,15 @@
 package com.slavafleer.moviemanager.ui;
 
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.slavafleer.moviemanager.Constants;
 import com.slavafleer.moviemanager.R;
@@ -24,16 +25,16 @@ import com.slavafleer.moviemanager.data.Movie;
 
 import java.util.ArrayList;
 
-public class MainActivity extends ListActivity {
+public class MainActivity extends AppCompatActivity {
 
     private final static int REQUEST_EDITOR = 1;
     private final static int REQUEST_SEARCH = 2;
 
     // Movies Collection.
-    private static ArrayList<Movie> mMoviesList = new ArrayList<>();
+    private ArrayList<Movie> mMoviesList = new ArrayList<>();
 
-    private ImageView mImageViewSettingsIcon;
-    private ImageView mImageViewPlusIcon;
+    private ListView mListViewMovies;
+    private TextView mEmptyMainMovieList;
     private ArrayAdapter<Movie> mArrayAdapter;
 
     @Override
@@ -41,12 +42,29 @@ public class MainActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mImageViewSettingsIcon = (ImageView) findViewById(R.id.imageViewSettingsIcon);
-        mImageViewPlusIcon = (ImageView) findViewById(R.id.imageViewPlusIcon);
+        mListViewMovies = (ListView)findViewById(R.id.listViewMainMovies);
+        mEmptyMainMovieList = (TextView)findViewById(R.id.emptyMainMovieList);
 
         // ListView adapter initialising.
         mArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mMoviesList);
-        setListAdapter(mArrayAdapter);
+        mListViewMovies.setAdapter(mArrayAdapter);
+
+        // On Item click transferring to Editor Screen.
+        mListViewMovies.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Movie movie = mMoviesList.get(position);
+                Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+                intent.putExtra(Constants.KEY_ID, movie.getId());
+                intent.putExtra(Constants.KEY_SUBJECT, movie.getSubject());
+                intent.putExtra(Constants.KEY_BODY, movie.getBody());
+                intent.putExtra(Constants.KEY_URL, movie.getUrl());
+                intent.putExtra(Constants.KEY_POSITION, position);
+                startActivityForResult(intent, REQUEST_EDITOR);
+            }
+        });
+
+        mListViewMovies.setEmptyView(mEmptyMainMovieList);
     }
 
     @Override
@@ -57,16 +75,17 @@ public class MainActivity extends ListActivity {
 
         // When returning from Editor Screen, add/update a movie in the list.
         if (requestCode == REQUEST_EDITOR) {
-            int id = data.getIntExtra(Constants.KEY_ID, 0);
+            String id = data.getStringExtra(Constants.KEY_ID);
             String subject = data.getStringExtra(Constants.KEY_SUBJECT);
             String body = data.getStringExtra(Constants.KEY_BODY);
             String url = data.getStringExtra(Constants.KEY_URL);
-            if(id == Constants.VALUE_NEW_MOVIE) {
+            if(id.equals(Constants.VALUE_NEW_MOVIE)) {
                 // New Movie in list.
                 mMoviesList.add(new Movie(subject, body, url));
             } else {
+                int position = data.getIntExtra(Constants.KEY_POSITION, -1);
                 // Update the movie in list at id position.
-                Movie movie = mMoviesList.get(--id); // First id in Movie List is 1.
+                Movie movie = mMoviesList.get(position); // First id in Movie List is 1.
                 movie.setSubject(subject);
                 movie.setBody(body);
                 movie.setUrl(url);
@@ -83,18 +102,6 @@ public class MainActivity extends ListActivity {
     public void imageViewPlusIcon_onClick(View view) {
         // Open Alert Dialog for choosing adding new movie mode: manual or via internet.
         openDialogForPlusIcon();
-    }
-
-    // On Item click transferring to Editor Screen.
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        Movie movie = mMoviesList.get(position);
-        Intent intent = new Intent(this, EditorActivity.class);
-        intent.putExtra(Constants.KEY_ID, movie.get_id());
-        intent.putExtra(Constants.KEY_SUBJECT, movie.getSubject());
-        intent.putExtra(Constants.KEY_BODY, movie.getBody());
-        intent.putExtra(Constants.KEY_URL, movie.getUrl());
-        startActivityForResult(intent, REQUEST_EDITOR);
     }
 
     // Open Alert Dialog on Plus Icon clicking for choosing

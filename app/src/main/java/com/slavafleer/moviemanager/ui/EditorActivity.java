@@ -22,7 +22,8 @@ public class EditorActivity extends AppCompatActivity {
     private EditText mEditTextUrl;
     private ImageView mImageViewUrl;
 
-    private int id;
+    private String mId;
+    private int mPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +36,10 @@ public class EditorActivity extends AppCompatActivity {
         mImageViewUrl = (ImageView)findViewById(R.id.imageViewUrl);
 
         Intent intent = getIntent();
-        id = intent.getIntExtra(Constants.KEY_ID, 0);
-        // If received properly id , continue receiving rest data.
-        if(id != Constants.VALUE_NEW_MOVIE) {
+        mPosition = intent.getIntExtra(Constants.KEY_POSITION, -1);
+        mId = intent.getStringExtra(Constants.KEY_ID);
+        // If received properly mId , continue receiving rest data.
+        if(!mId.equals(Constants.VALUE_NEW_MOVIE)) {
             mEditTextSubject.setText(intent.getStringExtra(Constants.KEY_SUBJECT));
             mEditTextBody.setText(intent.getStringExtra(Constants.KEY_BODY));
             mEditTextUrl.setText(intent.getStringExtra(Constants.KEY_URL));
@@ -52,10 +54,11 @@ public class EditorActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.editor_toast_no_subject, Toast.LENGTH_LONG).show();
             return;
         }
-        intent.putExtra(Constants.KEY_ID, id);
+        intent.putExtra(Constants.KEY_ID, mId);
         intent.putExtra(Constants.KEY_SUBJECT, subject);
         intent.putExtra(Constants.KEY_BODY, mEditTextBody.getText().toString());
         intent.putExtra(Constants.KEY_URL, mEditTextUrl.getText().toString());
+        intent.putExtra(Constants.KEY_POSITION, mPosition);
         setResult(RESULT_OK, intent);
         finish();
     }

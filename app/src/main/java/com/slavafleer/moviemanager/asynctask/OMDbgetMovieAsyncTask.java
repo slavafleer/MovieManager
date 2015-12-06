@@ -3,14 +3,12 @@ package com.slavafleer.moviemanager.asynctask;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.slavafleer.moviemanager.R;
+import com.slavafleer.moviemanager.data.Movie;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,31 +20,24 @@ import java.net.URL;
 import java.util.ArrayList;
 
 /**
- * This Async Task searches in OMDb data for wanted movie title
- * and returning all movies with positive answer (in Json).
+ * This Async Task searches in OMDb data for wanted movie by id
+ * and returning all data for this movie(in Json).
  */
-public class OMDbSearchAsyncTask extends AsyncTask<URL, Void, String> {
+public class OMDbgetMovieAsyncTask extends AsyncTask<URL, Void, String>  {
 
     private Activity mActivity;
+    private ArrayList<Movie> mMovies;
     private ProgressBar mProgressBarSearch;
-    private ArrayAdapter<String> adapter;
-    private ArrayList<String> mMovies = new ArrayList<>();
-    private ListView mListViewMovies;
 
-    public OMDbSearchAsyncTask(Activity activity) {
+    public OMDbgetMovieAsyncTask(Activity activity, ArrayList<Movie> movies) {
         mActivity = activity;
+        mMovies = movies;
     }
-
 
     @Override
     protected void onPreExecute() {
         mProgressBarSearch = (ProgressBar)mActivity.findViewById(R.id.progressBarSearch);
-        mListViewMovies = (ListView)mActivity.findViewById(R.id.listViewSearchMovies);
-
         mProgressBarSearch.setVisibility(View.VISIBLE);
-
-        adapter = new ArrayAdapter<>(mActivity, android.R.layout.simple_list_item_1, mMovies);
-        mListViewMovies.setAdapter(adapter);
     }
 
     @Override
@@ -84,15 +75,13 @@ public class OMDbSearchAsyncTask extends AsyncTask<URL, Void, String> {
     protected void onPostExecute(String result) {
         try {
             JSONObject jsonObject = new JSONObject(result);
-            JSONArray search = jsonObject.getJSONArray("Search");
-
-            for(int i = 0; i < search.length(); i++) {
-                mMovies.add(search.getJSONObject(i).getString("Title"));
-            }
-            adapter.notifyDataSetChanged();
+            String title = jsonObject.getString("Title");
+            String plot = jsonObject.getString("Plot");
+            String 
         } catch (JSONException e) {
             Toast.makeText(mActivity, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
         mProgressBarSearch.setVisibility(View.INVISIBLE);
     }
+
 }

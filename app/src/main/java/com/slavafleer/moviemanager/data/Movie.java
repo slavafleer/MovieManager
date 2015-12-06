@@ -5,32 +5,29 @@ public class Movie {
     /** Id given automatically to each object creating. */
     private static int counter = 0;
 
-    private int _id;
+    private String id;
     private String subject;
     private String body;
     // TODO:For now url is a String, need to decide later if it must be URL.
     private String url;
 
     public Movie() {
-        set_id(++counter);
+        setId("m" + ++counter);
     }
 
     public Movie(String subject, String body, String url) {
-        set_id(++counter);
+        setId("m" + ++counter);
         this.subject = subject;
         this.body = body;
         this.url = url;
     }
 
-    public int get_id() {
-        return _id;
+    public String getId() {
+        return id;
     }
 
-    public void set_id(int _id) {
-        // _id must be positive;
-        if(_id > 0) {
-            this._id = _id;
-        }
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getBody() {
@@ -69,6 +66,6 @@ public class Movie {
 
     @Override
     public String toString() {
-        return _id + ": " + subject;
+        return subject;
     }
 }
