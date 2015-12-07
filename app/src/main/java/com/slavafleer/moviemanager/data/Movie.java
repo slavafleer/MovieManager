@@ -22,6 +22,13 @@ public class Movie {
         this.url = url;
     }
 
+    public Movie(String id, String subject, String body, String url) {
+        this.id = id;
+        this.subject = subject;
+        this.body = body;
+        this.url = url;
+    }
+
     public String getId() {
         return id;
     }

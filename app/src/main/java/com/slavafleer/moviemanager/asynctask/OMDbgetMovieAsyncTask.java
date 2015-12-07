@@ -1,11 +1,13 @@
 package com.slavafleer.moviemanager.asynctask;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.slavafleer.moviemanager.Constants;
 import com.slavafleer.moviemanager.R;
 import com.slavafleer.moviemanager.data.Movie;
 
@@ -27,11 +29,13 @@ public class OMDbGetMovieAsyncTask extends AsyncTask<URL, Void, String>  {
 
     private Activity mActivity;
     private ArrayList<Movie> mMovies;
+    private int mPosition;
     private ProgressBar mProgressBarSearch;
 
-    public OMDbGetMovieAsyncTask(Activity activity, ArrayList<Movie> movies) {
+    public OMDbGetMovieAsyncTask(Activity activity, ArrayList<Movie> movies, int position) {
         mActivity = activity;
         mMovies = movies;
+        mPosition = position;
     }
 
     @Override
@@ -75,12 +79,21 @@ public class OMDbGetMovieAsyncTask extends AsyncTask<URL, Void, String>  {
     protected void onPostExecute(String result) {
         try {
             JSONObject jsonObject = new JSONObject(result);
-            String title = jsonObject.getString("Title");
-            String plot = jsonObject.getString("Plot");
+            String url = jsonObject.getString(Constants.KEY_OMDB_POSTER);
+            String body = jsonObject.getString(Constants.KEY_OMDB_PLOT);
+
+            Intent intent = new Intent();
+            intent.putExtra(Constants.KEY_ID, mMovies.get(mPosition).getId());
+            intent.putExtra(Constants.KEY_SUBJECT, mMovies.get(mPosition).getSubject());
+            intent.putExtra(Constants.KEY_BODY, body);
+            intent.putExtra(Constants.KEY_URL, url);
+            mActivity.setResult(mActivity.RESULT_OK, intent);
         } catch (JSONException e) {
             Toast.makeText(mActivity, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
+
         mProgressBarSearch.setVisibility(View.INVISIBLE);
+        mActivity.finish();
     }
 
 }

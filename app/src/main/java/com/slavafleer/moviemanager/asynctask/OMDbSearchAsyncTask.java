@@ -8,7 +8,9 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.slavafleer.moviemanager.Constants;
 import com.slavafleer.moviemanager.R;
+import com.slavafleer.moviemanager.data.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,12 +31,14 @@ public class OMDbSearchAsyncTask extends AsyncTask<URL, Void, String> {
 
     private Activity mActivity;
     private ProgressBar mProgressBarSearch;
-    private ArrayAdapter<String> adapter;
-    private ArrayList<String> mMovies = new ArrayList<>();
+    private ArrayAdapter<Movie> adapter;
+//    private ArrayList<String> mMovies = new ArrayList<>();
+    private ArrayList<Movie> mMovies;
     private ListView mListViewMovies;
 
-    public OMDbSearchAsyncTask(Activity activity) {
+    public OMDbSearchAsyncTask(Activity activity, ArrayList<Movie> movies) {
         mActivity = activity;
+        mMovies = movies;
     }
 
 
@@ -84,12 +88,15 @@ public class OMDbSearchAsyncTask extends AsyncTask<URL, Void, String> {
     protected void onPostExecute(String result) {
         try {
             JSONObject jsonObject = new JSONObject(result);
-            JSONArray search = jsonObject.getJSONArray("Search");
+            JSONArray search = jsonObject.getJSONArray(Constants.KEY_OMDB_SEARCH);
 
             for(int i = 0; i < search.length(); i++) {
-                mMovies.add(search.getJSONObject(i).getString("Title"));
+                String id = search.getJSONObject(i).getString(Constants.KEY_OMDB_ID);
+                String title = search.getJSONObject(i).getString(Constants.KEY_OMDB_TITLE);
+                mMovies.add(new Movie(id, title, "", ""));
             }
             adapter.notifyDataSetChanged();
+
         } catch (JSONException e) {
             Toast.makeText(mActivity, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }

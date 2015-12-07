@@ -42,7 +42,13 @@ public class EditorActivity extends AppCompatActivity {
         if(!mId.equals(Constants.VALUE_NEW_MOVIE)) {
             mEditTextSubject.setText(intent.getStringExtra(Constants.KEY_SUBJECT));
             mEditTextBody.setText(intent.getStringExtra(Constants.KEY_BODY));
-            mEditTextUrl.setText(intent.getStringExtra(Constants.KEY_URL));
+            String url = intent.getStringExtra(Constants.KEY_URL);
+            mEditTextUrl.setText(url);
+
+            // Show picture automatic.
+            if(!url.equals("")) {
+                showImageFromUrl(url);
+            }
         }
     }
 
@@ -70,10 +76,13 @@ public class EditorActivity extends AppCompatActivity {
 
     // Show Image from URL.
     public void buttonShow_onClick(View view) {
+        showImageFromUrl(mEditTextUrl.getText().toString());
+    }
+
+    private void showImageFromUrl(String urlAsString) {
         try {
             DownloadingPictureByUrlAsyncTask downloadingPictureByUrlAsyncTask =
                 new DownloadingPictureByUrlAsyncTask(this);
-            String urlAsString = mEditTextUrl.getText().toString();
             URL url = new URL(urlAsString);
             downloadingPictureByUrlAsyncTask.execute(url);
         } catch (MalformedURLException e) {

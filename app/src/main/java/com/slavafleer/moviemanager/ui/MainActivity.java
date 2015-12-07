@@ -6,6 +6,8 @@
  * filling movie description by user himself.
  */
 
+// TODO: Think if saving file must be as AsyncTask or cause it not time eater live it in main thread.
+
 package com.slavafleer.moviemanager.ui;
 
 import android.app.AlertDialog;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 
 import com.slavafleer.moviemanager.Constants;
 import com.slavafleer.moviemanager.R;
+import com.slavafleer.moviemanager.data.FileManager;
 import com.slavafleer.moviemanager.data.Movie;
 
 import java.util.ArrayList;
@@ -29,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     private final static int REQUEST_EDITOR = 1;
     private final static int REQUEST_SEARCH = 2;
+
+    private final static String FILE_NAME = "movieslist.txt";
 
     // Movies Collection.
     private ArrayList<Movie> mMoviesList = new ArrayList<>();
@@ -41,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Loading movie list from the file, if failed - reset the array list.
+        if(FileManager.loadFile(this, FILE_NAME, mMoviesList) == FileManager.RESULT_ERROR) {
+            mMoviesList = new ArrayList<>();
+        }
 
         mListViewMovies = (ListView)findViewById(R.id.listViewMainMovies);
         mEmptyMainMovieList = (TextView)findViewById(R.id.emptyMainMovieList);
@@ -73,29 +83,43 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        String id = data.getStringExtra(Constants.KEY_ID);
+        String subject = data.getStringExtra(Constants.KEY_SUBJECT);
+        String body = data.getStringExtra(Constants.KEY_BODY);
+        String url = data.getStringExtra(Constants.KEY_URL);
+
         // When returning from Editor Screen, add/update a movie in the list.
         if (requestCode == REQUEST_EDITOR) {
-            String id = data.getStringExtra(Constants.KEY_ID);
-            String subject = data.getStringExtra(Constants.KEY_SUBJECT);
-            String body = data.getStringExtra(Constants.KEY_BODY);
-            String url = data.getStringExtra(Constants.KEY_URL);
             if(id.equals(Constants.VALUE_NEW_MOVIE)) {
                 // New Movie in list.
-                mMoviesList.add(new Movie(subject, body, url));
+                Movie movie = new Movie(subject, body, url);
+                mMoviesList.add(movie);
+
+                // Add to file.
+                FileManager.addToFile(this, FILE_NAME, movie);
             } else {
                 int position = data.getIntExtra(Constants.KEY_POSITION, -1);
                 // Update the movie in list at id position.
-                Movie movie = mMoviesList.get(position); // First id in Movie List is 1.
+                Movie movie = mMoviesList.get(position);
                 movie.setSubject(subject);
                 movie.setBody(body);
                 movie.setUrl(url);
+
+                // Rewrite the file.
+                FileManager.saveFile(this, FILE_NAME, mMoviesList);
             }
-            mArrayAdapter.notifyDataSetChanged();
         }
         // On returning from Search screen, add new movie in the list.
         else if(requestCode == REQUEST_SEARCH) {
+            // New Movie in list.
+            Movie movie = new Movie(id, subject, body, url);
+            mMoviesList.add(movie);
 
+            // Add to file.
+            FileManager.addToFile(this, FILE_NAME, movie);
         }
+
+        mArrayAdapter.notifyDataSetChanged();
     }
 
     // PlusIcon on click actions.
