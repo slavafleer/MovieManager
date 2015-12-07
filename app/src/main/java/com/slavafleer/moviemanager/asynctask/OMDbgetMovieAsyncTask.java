@@ -23,13 +23,13 @@ import java.util.ArrayList;
  * This Async Task searches in OMDb data for wanted movie by id
  * and returning all data for this movie(in Json).
  */
-public class OMDbgetMovieAsyncTask extends AsyncTask<URL, Void, String>  {
+public class OMDbGetMovieAsyncTask extends AsyncTask<URL, Void, String>  {
 
     private Activity mActivity;
     private ArrayList<Movie> mMovies;
     private ProgressBar mProgressBarSearch;
 
-    public OMDbgetMovieAsyncTask(Activity activity, ArrayList<Movie> movies) {
+    public OMDbGetMovieAsyncTask(Activity activity, ArrayList<Movie> movies) {
         mActivity = activity;
         mMovies = movies;
     }
@@ -77,7 +77,6 @@ public class OMDbgetMovieAsyncTask extends AsyncTask<URL, Void, String>  {
             JSONObject jsonObject = new JSONObject(result);
             String title = jsonObject.getString("Title");
             String plot = jsonObject.getString("Plot");
-            String 
         } catch (JSONException e) {
             Toast.makeText(mActivity, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
