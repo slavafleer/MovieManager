@@ -65,31 +65,26 @@ public class MainActivity extends AppCompatActivity {
         mListViewMovies.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Movie movie = mMoviesList.get(position);
-                Intent intent = new Intent(MainActivity.this, EditorActivity.class);
-                intent.putExtra(Constants.KEY_ID, movie.getId());
-                intent.putExtra(Constants.KEY_SUBJECT, movie.getSubject());
-                intent.putExtra(Constants.KEY_BODY, movie.getBody());
-                intent.putExtra(Constants.KEY_URL, movie.getUrl());
-                intent.putExtra(Constants.KEY_POSITION, position);
-                startActivityForResult(intent, REQUEST_EDITOR);
+                transferToEditorActivity(position);
             }
         });
 
         mListViewMovies.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.action_delete:
-                                mM
+                                mMoviesList.remove(position);
+                                FileManager.saveFile(MainActivity.this, FILE_NAME, mMoviesList);
+                                mArrayAdapter.notifyDataSetChanged();
                                 break;
 
                             case R.id.action_edit:
-
+                                transferToEditorActivity(position);
                                 break;
                         }
 
@@ -104,6 +99,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mListViewMovies.setEmptyView(mEmptyMainMovieList);
+    }
+
+    private void transferToEditorActivity(int position) {
+        Movie movie = mMoviesList.get(position);
+        Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+        intent.putExtra(Constants.KEY_ID, movie.getId());
+        intent.putExtra(Constants.KEY_SUBJECT, movie.getSubject());
+        intent.putExtra(Constants.KEY_BODY, movie.getBody());
+        intent.putExtra(Constants.KEY_URL, movie.getUrl());
+        intent.putExtra(Constants.KEY_POSITION, position);
+        startActivityForResult(intent, REQUEST_EDITOR);
     }
 
     @Override

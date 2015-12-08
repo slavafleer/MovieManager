@@ -32,7 +32,6 @@ public class OMDbSearchAsyncTask extends AsyncTask<URL, Void, String> {
     private Activity mActivity;
     private ProgressBar mProgressBarSearch;
     private ArrayAdapter<Movie> adapter;
-//    private ArrayList<String> mMovies = new ArrayList<>();
     private ArrayList<Movie> mMovies;
     private ListView mListViewMovies;
 
