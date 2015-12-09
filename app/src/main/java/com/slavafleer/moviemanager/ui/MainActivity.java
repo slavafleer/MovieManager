@@ -9,6 +9,7 @@
 // TODO: need to do custom adaptor for ellipsized title.
 // TODO: need to comment all methods.
 // TODO: checking for offline mode and giving possibility working in offline mode.
+// TODO: care for N/A strings from OMDB API.
 
 package com.slavafleer.moviemanager.ui;
 
@@ -111,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(Constants.KEY_SUBJECT, movie.getSubject());
         intent.putExtra(Constants.KEY_BODY, movie.getBody());
         intent.putExtra(Constants.KEY_URL, movie.getUrl());
+        intent.putExtra(Constants.KEY_RATING, movie.getRating());
+        intent.putExtra(Constants.KEY_IS_WATCHED, movie.getIsWatched());
         intent.putExtra(Constants.KEY_POSITION, position);
         startActivityForResult(intent, REQUEST_EDITOR);
     }
@@ -125,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
         String subject = data.getStringExtra(Constants.KEY_SUBJECT);
         String body = data.getStringExtra(Constants.KEY_BODY);
         String url = data.getStringExtra(Constants.KEY_URL);
+        float rating = data.getFloatExtra(Constants.KEY_RATING, 0);
+        boolean isWatched = data.getBooleanExtra(Constants.KEY_IS_WATCHED, false);
 
         // When returning from Editor Screen, add/update a movie in the list.
         if (requestCode == REQUEST_EDITOR) {
@@ -142,6 +147,8 @@ public class MainActivity extends AppCompatActivity {
                 movie.setSubject(subject);
                 movie.setBody(body);
                 movie.setUrl(url);
+                movie.setRating(rating);
+                movie.setIsWatched(isWatched);
 
                 // Rewrite the file.
                 FileManager.saveFile(this, FILE_NAME, mMoviesList);
@@ -151,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
         else if(requestCode == REQUEST_SEARCH) {
             // New Movie in list.
             Movie movie = new Movie(id, subject, body, url);
+            movie.setRating(rating);
             mMoviesList.add(movie);
 
             // Add to file.

@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.slavafleer.moviemanager.Constants;
@@ -21,6 +23,8 @@ public class EditorActivity extends AppCompatActivity {
     private EditText mEditTextBody;
     private EditText mEditTextUrl;
     private ImageView mImageViewUrl;
+    private RatingBar mRatingBar;
+    private CheckBox mCheckBoxWatched;
 
     private String mId;
     private int mPosition;
@@ -34,16 +38,27 @@ public class EditorActivity extends AppCompatActivity {
         mEditTextBody = (EditText)findViewById(R.id.editTextBodyValue);
         mEditTextUrl = (EditText)findViewById(R.id.editTextUrlValue);
         mImageViewUrl = (ImageView)findViewById(R.id.imageViewUrl);
+        mRatingBar = (RatingBar)findViewById(R.id.ratingBar);
+        mCheckBoxWatched = (CheckBox)findViewById(R.id.checkBoxWatched);
+
+        mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                Toast.makeText(EditorActivity.this, rating + "", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         Intent intent = getIntent();
         mPosition = intent.getIntExtra(Constants.KEY_POSITION, -1);
         mId = intent.getStringExtra(Constants.KEY_ID);
-        // If received properly mId , continue receiving rest data.
+        // If received properly mId , continue receiving rest of data.
         if(!mId.equals(Constants.VALUE_NEW_MOVIE)) {
             mEditTextSubject.setText(intent.getStringExtra(Constants.KEY_SUBJECT));
             mEditTextBody.setText(intent.getStringExtra(Constants.KEY_BODY));
             String url = intent.getStringExtra(Constants.KEY_URL);
             mEditTextUrl.setText(url);
+            mRatingBar.setRating(intent.getFloatExtra(Constants.KEY_RATING, 0) / 2f);
+            mCheckBoxWatched.setChecked(intent.getBooleanExtra(Constants.KEY_IS_WATCHED, false));
 
             // Show picture automatic.
             if(!url.equals("")) {
@@ -65,6 +80,8 @@ public class EditorActivity extends AppCompatActivity {
         intent.putExtra(Constants.KEY_BODY, mEditTextBody.getText().toString().trim());
         intent.putExtra(Constants.KEY_URL, mEditTextUrl.getText().toString().trim());
         intent.putExtra(Constants.KEY_POSITION, mPosition);
+        intent.putExtra(Constants.KEY_RATING, mRatingBar.getRating() * 2);
+        intent.putExtra(Constants.KEY_IS_WATCHED, mCheckBoxWatched.isChecked());
         setResult(RESULT_OK, intent);
         finish();
     }

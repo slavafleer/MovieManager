@@ -9,8 +9,8 @@ public class Movie {
     private String subject;
     private String body;
     private String url;
-    private boolean hasWatched;
-    private int score;
+    private float rating; // from 1 to 10, 0 is not jet rated.
+    private boolean isWatched;
 
     public Movie() {
         setId("m" + ++counter);
@@ -29,6 +29,15 @@ public class Movie {
         this.subject = subject;
         this.body = body;
         this.url = url;
+    }
+
+    public Movie(String id, String subject, String body, String url, float rating, boolean isWatched) {
+        this.id = id;
+        this.subject = subject;
+        this.body = body;
+        this.url = url;
+        this.rating = rating;
+        this.isWatched = isWatched;
     }
 
     public String getId() {
@@ -73,20 +82,20 @@ public class Movie {
         }
     }
 
-    public boolean isHasWatched() {
-        return hasWatched;
+    public boolean getIsWatched() {
+        return isWatched;
     }
 
     public void setIsWatched(boolean isWatched) {
-        this.hasWatched = isWatched;
+        this.isWatched = isWatched;
     }
 
-    public int getScore() {
-        return score;
+    public float getRating() {
+        return rating;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 
     @Override

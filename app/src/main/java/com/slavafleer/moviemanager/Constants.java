@@ -10,6 +10,8 @@ public class Constants {
     public final static String KEY_BODY = "body";
     public final static String KEY_URL = "url";
     public final static String KEY_POSITION = "position";
+    public final static String KEY_RATING = "rating";
+    public final static String KEY_IS_WATCHED = "hasWatched";
 
     // OMDb api keys.
     public final static String KEY_OMDB_ID = "imdbID";
@@ -17,6 +19,7 @@ public class Constants {
     public final static String KEY_OMDB_TITLE = "Title";
     public final static String KEY_OMDB_POSTER = "Poster";
     public final static String KEY_OMDB_PLOT = "Plot";
+    public final static String KEY_OMDB_METASCORE = "Metascore";
 
     public final static String VALUE_NEW_MOVIE = "0";
 }

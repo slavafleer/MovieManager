@@ -31,6 +31,8 @@ public class FileManager {
                 fileWriter.write(movies.get(i).getSubject() + "\r\n");
                 fileWriter.write(movies.get(i).getBody() + "\r\n" + END_OF_TEXT + "\r\n");
                 fileWriter.write(movies.get(i).getUrl() + "\r\n");
+                fileWriter.write(movies.get(i).getRating() + "\r\n");
+                fileWriter.write(movies.get(i).getIsWatched() + "\r\n");
             }
 
             fileWriter.close();
@@ -48,10 +50,12 @@ public class FileManager {
             String fullPathFileName = activity.getFilesDir().getAbsolutePath() + "/" + fileName;
             FileWriter fileWriter = new FileWriter(fullPathFileName, true);
 
-                fileWriter.write(movie.getId() + "\r\n");
-                fileWriter.write(movie.getSubject() + "\r\n");
-                fileWriter.write(movie.getBody() + "\r\n" + END_OF_TEXT + "\r\n");
-                fileWriter.write(movie.getUrl() + "\r\n");
+            fileWriter.write(movie.getId() + "\r\n");
+            fileWriter.write(movie.getSubject() + "\r\n");
+            fileWriter.write(movie.getBody() + "\r\n" + END_OF_TEXT + "\r\n");
+            fileWriter.write(movie.getUrl() + "\r\n");
+            fileWriter.write(movie.getRating() + "\r\n");
+            fileWriter.write(movie.getIsWatched() + "\r\n");
 
             fileWriter.close();
 
@@ -82,8 +86,10 @@ public class FileManager {
                     oneLine = bufferedReader.readLine();
                 }
                 String url = bufferedReader.readLine();
+                float rating = Float.parseFloat(bufferedReader.readLine());
+                boolean isWatched = Boolean.parseBoolean(bufferedReader.readLine());
 
-                movies.add(new Movie(id, subject, body, url));
+                movies.add(new Movie(id, subject, body, url, rating, isWatched));
 
                 oneLine = bufferedReader.readLine();
             }

@@ -11,7 +11,6 @@ import com.slavafleer.moviemanager.Constants;
 import com.slavafleer.moviemanager.R;
 import com.slavafleer.moviemanager.data.Movie;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -81,14 +80,16 @@ public class OMDbGetMovieAsyncTask extends AsyncTask<URL, Void, String>  {
             JSONObject jsonObject = new JSONObject(result);
             String url = jsonObject.getString(Constants.KEY_OMDB_POSTER);
             String body = jsonObject.getString(Constants.KEY_OMDB_PLOT);
+            String rating = jsonObject.getString(Constants.KEY_OMDB_METASCORE);
 
             Intent intent = new Intent();
             intent.putExtra(Constants.KEY_ID, mMovies.get(mPosition).getId());
             intent.putExtra(Constants.KEY_SUBJECT, mMovies.get(mPosition).getSubject());
             intent.putExtra(Constants.KEY_BODY, body);
             intent.putExtra(Constants.KEY_URL, url);
+            intent.putExtra(Constants.KEY_RATING, Float.parseFloat(rating) / 10);
             mActivity.setResult(mActivity.RESULT_OK, intent);
-        } catch (JSONException e) {
+        } catch (Exception e) {
             Toast.makeText(mActivity, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
