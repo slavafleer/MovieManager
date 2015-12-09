@@ -37,7 +37,8 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textViewMainTopic"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"/>
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        />
 
     <TextView
         android:id="@+id/emptyMainMovieList"

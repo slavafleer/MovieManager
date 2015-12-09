@@ -55,15 +55,15 @@ public class EditorActivity extends AppCompatActivity {
     // Transfer all data to Main Activity on OK click and close this activity.
     public void buttonEditorOk_onClick(View view) {
         Intent intent = new Intent();
-        String subject = mEditTextSubject.getText().toString();
-        if(subject.trim().equals("")) {
+        String subject = mEditTextSubject.getText().toString().trim();
+        if(subject.equals("")) {
             Toast.makeText(this, R.string.editor_toast_no_subject, Toast.LENGTH_LONG).show();
             return;
         }
         intent.putExtra(Constants.KEY_ID, mId);
         intent.putExtra(Constants.KEY_SUBJECT, subject);
-        intent.putExtra(Constants.KEY_BODY, mEditTextBody.getText().toString());
-        intent.putExtra(Constants.KEY_URL, mEditTextUrl.getText().toString());
+        intent.putExtra(Constants.KEY_BODY, mEditTextBody.getText().toString().trim());
+        intent.putExtra(Constants.KEY_URL, mEditTextUrl.getText().toString().trim());
         intent.putExtra(Constants.KEY_POSITION, mPosition);
         setResult(RESULT_OK, intent);
         finish();

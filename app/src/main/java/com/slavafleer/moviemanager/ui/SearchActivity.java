@@ -1,9 +1,11 @@
 package com.slavafleer.moviemanager.ui;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -57,12 +59,20 @@ public class SearchActivity extends AppCompatActivity {
         try {
             Uri uri = Uri.parse("http://www.omdbapi.com/?")
                     .buildUpon()
-                    .appendQueryParameter("s", mEditTextSearchValue.getText().toString())
+                    .appendQueryParameter("s", mEditTextSearchValue.getText().toString().trim())
                     .build();
             URL url = new URL(uri.toString());
 
             OMDbSearchAsyncTask omdbSearchAsyncTask = new OMDbSearchAsyncTask(this, mMovies);
             omdbSearchAsyncTask.execute(url);
+
+            // Hide soft keyboard after searching.
+            // Check if no view has focus:
+            View focusedView = this.getCurrentFocus();
+            if (focusedView != null) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
         } catch (MalformedURLException e) {
             Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }

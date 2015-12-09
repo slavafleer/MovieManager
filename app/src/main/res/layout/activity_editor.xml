@@ -28,7 +28,9 @@
         android:layout_marginLeft="@dimen/view_horizontal_margin"
         android:layout_toEndOf="@+id/textViewSubjectLabel"
         android:layout_toRightOf="@+id/textViewSubjectLabel"
-        android:singleLine="true"/>
+        android:inputType="textShortMessage"
+        android:singleLine="true"
+        />
 
     <TextView
         android:id="@+id/textViewBodyLabel"
@@ -65,7 +67,9 @@
                     android:id="@+id/editTextBodyValue"
                     style="@style/EditTextStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    android:background="@drawable/black_board"
+                    android:padding="@dimen/view_horizontal_margin"/>
             </ScrollView>
         </LinearLayout>
 
@@ -98,8 +102,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
-                    android:text="@string/editor_button_show_label"
-                    android:onClick="buttonShow_onClick"/>
+                    android:onClick="buttonShow_onClick"
+                    android:text="@string/editor_button_show_label"/>
 
                 <EditText
                     android:id="@+id/editTextUrlValue"
@@ -111,7 +115,9 @@
                     android:layout_marginLeft="@dimen/view_horizontal_margin"
                     android:layout_toLeftOf="@+id/buttonShow"
                     android:layout_toRightOf="@+id/textViewUrlLabel"
-                    android:singleLine="true"/>
+                    android:inputType="textUri"
+                    android:singleLine="true"
+                    />
 
                 <FrameLayout
                     android:id="@+id/centerAnchor"
@@ -158,12 +164,12 @@
                     android:scaleType="fitCenter"/>
 
                 <ProgressBar
+                    android:id="@+id/progressBarUrl"
                     style="?android:attr/progressBarStyleLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/progressBarUrl"
-                    android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
                     android:visibility="invisible"/>
             </RelativeLayout>
         </LinearLayout>

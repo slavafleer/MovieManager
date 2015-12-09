@@ -13,14 +13,12 @@ import java.util.ArrayList;
  */
 public class FileManager {
 
-    // TODO: right now body must be one line only. Need to fix it later.
-
     private final static String TAG = FileManager.class.getSimpleName();
 
     public final static int RESULT_OK = 1;
     public final static int RESULT_ERROR = 2;
 
-    private final static String END_OF_TEXT = "!@#$%*";
+    private final static String END_OF_TEXT = "!1*8@2&7#3^6";
 
     public static int saveFile(Activity activity, String fileName, ArrayList<Movie> movies) {
 
@@ -92,6 +90,20 @@ public class FileManager {
 
             bufferedReader.close();
             fileReader.close();
+
+            return RESULT_OK;
+        } catch (Exception e) {
+            Log.e(TAG, "Error: " + e.getMessage());
+            return RESULT_ERROR;
+        }
+    }
+
+    public static int deleteFile(Activity activity, String fileName) {
+        try {
+            String fullPathFileName = activity.getFilesDir().getAbsolutePath() + "/" + fileName;
+            FileWriter fileWriter = new FileWriter(fullPathFileName);
+            fileWriter.flush();
+            fileWriter.close();
 
             return RESULT_OK;
         } catch (Exception e) {

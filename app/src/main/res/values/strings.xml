@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">MovieManager</string>
+    <string name="app_name">Movies Manager</string>
 
     <!-- Main Activity -->
     <string name="main_topic">My Movies</string>
-    <string name="main_empty_list_text">You have no any movie\nin your list.\nPress on Plus Icon below\nfor adding a new movie.</string>
+    <string name="main_empty_list_text">You have no any movie\nin your list.\nPress on Plus Icon below,\nfor adding a new movie.</string>
     <string name="editor_textview_subject_label">Subject:</string>
 
     <!-- Alert Dialog for Plus Icon -->
@@ -13,12 +13,25 @@
     <string name="main_dialog_plus_icon_negative_button_label">Search</string>
     <string name="main_dialog_plus_icon_neutral_button_label">Abort</string>
 
+    <!-- Main Menu -->
+    <string name="menu_main_delete_all_title">Delete All</string>
+    <string name="menu_main_exit_title">Exit</string>
+
+    <!-- Popup Menus -->
+    <string name="menu_item_delete_title">Delete</string>
+    <string name="menu_item_edit_title">Edit</string>
+    <string name="menu_plus_button_search_title">Search</string>
+    <string name="menu_plus_button_manual_title">Manual</string>
+
     <!-- Editor Activity -->
     <string name="editor_textview_body_label">Body:</string>
-    <string name="editor_textview_url_label">URL</string>
+    <string name="editor_textview_url_label">URL:</string>
     <string name="editor_button_show_label">Show</string>
     <string name="button_ok_label">OK</string>
     <string name="button_cancel_label">Cancel</string>
+
+    <!-- Search Activity -->
+    <string name="button_go_label">Go</string>
 
     <!-- Toast messages -->
     <string name="editor_toast_no_subject">Subject must be filled.</string>

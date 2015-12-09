@@ -29,8 +29,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="Go"
-        android:onClick="buttonGo_onClick"/>
+        android:onClick="buttonGo_onClick"
+        android:text="@string/button_go_label"/>
 
     <EditText
         android:id="@+id/editTextSearchValue"
@@ -40,7 +40,9 @@
         android:layout_alignBottom="@+id/buttonGo"
         android:layout_marginLeft="@dimen/view_horizontal_margin"
         android:layout_toLeftOf="@+id/buttonGo"
-        android:layout_toRightOf="@+id/textViewSearchLabel"/>
+        android:layout_toRightOf="@+id/textViewSearchLabel"
+        android:inputType="textShortMessage"
+        />
 
     <Button
         android:id="@+id/buttonSearchCancel"
@@ -48,10 +50,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/button_cancel_label"
-        android:onClick="buttonSearchCancel_onClick"/>
+        android:onClick="buttonSearchCancel_onClick"
+        android:text="@string/button_cancel_label"/>
 
     <ListView
+        android:id="@+id/listViewSearchMovies"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonSearchCancel"
@@ -59,15 +62,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/view_vertical_margin"
         android:layout_marginLeft="@dimen/view_horizontal_margin"
-        android:layout_marginTop="@dimen/view_vertical_margin"
-        android:id="@+id/listViewSearchMovies"/>
+        android:layout_marginTop="@dimen/view_vertical_margin"/>
 
     <ProgressBar
+        android:id="@+id/progressBarSearch"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/progressBarSearch"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:visibility="invisible"/>
 </RelativeLayout>

@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.EditorActivity"
-                  android:configChanges="orientation|screenSize">
+                  android:configChanges="orientation|screenSize"
+                  android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".ui.SearchActivity"
                   android:configChanges="orientation|screenSize">

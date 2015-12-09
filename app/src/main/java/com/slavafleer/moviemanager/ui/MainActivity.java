@@ -6,7 +6,9 @@
  * filling movie description by user himself.
  */
 
-// TODO: Think if saving file must be as AsyncTask or cause it not time eater live it in main thread.
+// TODO: need to do custom adaptor for ellipsized title.
+// TODO: need to comment all methods.
+// TODO: checking for offline mode and giving possibility working in offline mode.
 
 package com.slavafleer.moviemanager.ui;
 
@@ -15,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -159,8 +162,31 @@ public class MainActivity extends AppCompatActivity {
 
     // PlusIcon on click actions.
     public void imageViewPlusIcon_onClick(View view) {
-        // Open Alert Dialog for choosing adding new movie mode: manual or via internet.
-        openDialogForPlusIcon();
+/*        // Open Alert Dialog for choosing adding new movie mode: manual or via internet.
+        openDialogForPlusIcon();*/
+
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.inflate(R.menu.menu_plus_button);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_plus_manual:
+                        Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+                        intent.putExtra(Constants.KEY_ID, Constants.VALUE_NEW_MOVIE);
+                        startActivityForResult(intent, REQUEST_EDITOR);
+                        break;
+
+                    case R.id.action_plus_search:
+                        Intent intentSearch = new Intent(MainActivity.this, SearchActivity.class);
+                        startActivityForResult(intentSearch, REQUEST_SEARCH);
+                        break;
+                }
+
+                return true;
+            }
+        });
+        popupMenu.show();
     }
 
     // Open Alert Dialog on Plus Icon clicking for choosing
@@ -192,5 +218,29 @@ public class MainActivity extends AppCompatActivity {
                 .create();
         dialog.setCancelable(false);
         dialog.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_delete_all:
+                FileManager.deleteFile(this, FILE_NAME);
+                mMoviesList.clear();
+                mArrayAdapter.notifyDataSetChanged();
+                break;
+
+            case R.id.action_exit:
+                finish();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

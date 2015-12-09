@@ -8,11 +8,13 @@ public class Movie {
     private String id;
     private String subject;
     private String body;
-    // TODO:For now url is a String, need to decide later if it must be URL.
     private String url;
+    private boolean hasWatched;
+    private int score;
 
     public Movie() {
         setId("m" + ++counter);
+
     }
 
     public Movie(String subject, String body, String url) {
@@ -69,6 +71,22 @@ public class Movie {
         if(counter >= 0) {
             Movie.counter = counter;
         }
+    }
+
+    public boolean isHasWatched() {
+        return hasWatched;
+    }
+
+    public void setIsWatched(boolean isWatched) {
+        this.hasWatched = isWatched;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     @Override
