@@ -41,12 +41,13 @@ public class EditorActivity extends AppCompatActivity {
         mRatingBar = (RatingBar)findViewById(R.id.ratingBar);
         mCheckBoxWatched = (CheckBox)findViewById(R.id.checkBoxWatched);
 
-        mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                Toast.makeText(EditorActivity.this, rating + "", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        // Debugging
+//        mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+//            @Override
+//            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+//                Toast.makeText(EditorActivity.this, rating + "", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         Intent intent = getIntent();
         mPosition = intent.getIntExtra(Constants.KEY_POSITION, -1);
@@ -57,7 +58,20 @@ public class EditorActivity extends AppCompatActivity {
             mEditTextBody.setText(intent.getStringExtra(Constants.KEY_BODY));
             String url = intent.getStringExtra(Constants.KEY_URL);
             mEditTextUrl.setText(url);
-            mRatingBar.setRating(intent.getFloatExtra(Constants.KEY_RATING, 0) / 2f);
+
+            /** Rating Bar Bug!!!
+             * Next code prevents bug of filling whole star even if rating data is integer.
+             * It happens on some "old" apis as 4.2.2 and 4.3, maybe more.
+             * On api 5.* it's not needed, cause have no such bug.
+             * The prevent this bug, need to rewrite rating data again with some change.
+             * It must be on same star!!!
+             * */
+            float rating = intent.getFloatExtra(Constants.KEY_RATING, 0) / 2f;
+            if((rating * 10) % 10 != 0 ) {
+                mRatingBar.setRating(rating + 0.5f);
+            }
+            mRatingBar.setRating(rating);
+
             mCheckBoxWatched.setChecked(intent.getBooleanExtra(Constants.KEY_IS_WATCHED, false));
 
             // Show picture automatic.
