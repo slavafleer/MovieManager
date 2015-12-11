@@ -2,7 +2,11 @@ package com.slavafleer.moviemanager.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -11,8 +15,8 @@ import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.slavafleer.moviemanager.Constants;
-import com.slavafleer.moviemanager.asynctask.DownloadingPictureByUrlAsyncTask;
 import com.slavafleer.moviemanager.R;
+import com.slavafleer.moviemanager.asynctask.DownloadingPictureByUrlAsyncTask;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -28,6 +32,10 @@ public class EditorActivity extends AppCompatActivity {
 
     private String mId;
     private int mPosition;
+    private String mSubject;
+    private String mBody;
+
+    private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +62,10 @@ public class EditorActivity extends AppCompatActivity {
         mId = intent.getStringExtra(Constants.KEY_ID);
         // If received properly mId , continue receiving rest of data.
         if(!mId.equals(Constants.VALUE_NEW_MOVIE)) {
-            mEditTextSubject.setText(intent.getStringExtra(Constants.KEY_SUBJECT));
-            mEditTextBody.setText(intent.getStringExtra(Constants.KEY_BODY));
+            mSubject = intent.getStringExtra(Constants.KEY_SUBJECT);
+            mEditTextSubject.setText(mSubject);
+            mBody = intent.getStringExtra(Constants.KEY_BODY);
+            mEditTextBody.setText(mBody);
             String url = intent.getStringExtra(Constants.KEY_URL);
             mEditTextUrl.setText(url);
 
@@ -84,13 +94,13 @@ public class EditorActivity extends AppCompatActivity {
     // Transfer all data to Main Activity on OK click and close this activity.
     public void buttonEditorOk_onClick(View view) {
         Intent intent = new Intent();
-        String subject = mEditTextSubject.getText().toString().trim();
-        if(subject.equals("")) {
+        mSubject = mEditTextSubject.getText().toString().trim();
+        if(mSubject.equals("")) {
             Toast.makeText(this, R.string.editor_toast_no_subject, Toast.LENGTH_LONG).show();
             return;
         }
         intent.putExtra(Constants.KEY_ID, mId);
-        intent.putExtra(Constants.KEY_SUBJECT, subject);
+        intent.putExtra(Constants.KEY_SUBJECT, mSubject);
         intent.putExtra(Constants.KEY_BODY, mEditTextBody.getText().toString().trim());
         intent.putExtra(Constants.KEY_URL, mEditTextUrl.getText().toString().trim());
         intent.putExtra(Constants.KEY_POSITION, mPosition);
@@ -120,5 +130,33 @@ public class EditorActivity extends AppCompatActivity {
             mImageViewUrl.setImageResource(R.drawable.android_fragmentation);
             Toast.makeText(this, R.string.editor_toast_incorrect_url, Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate menu resource file.
+        getMenuInflater().inflate(R.menu.menu_editor, menu);
+        // Locate MenuItem with ShareActionProvider
+        MenuItem item = menu.findItem(R.id.action_share);
+        // Fetch and store ShareActionProvider
+//        mShareActionProvider =(ShareActionProvider)MenuItemCompat.getActionProvider(item);
+        // Return true to display menu
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_share:
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_TEXT, mSubject + "\n\n" + mBody);
+                intent.setType("text/plain");
+                startActivity(intent);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
