@@ -6,4 +6,8 @@
     <!-- Default view margins. -->
     <dimen name="view_horizontal_margin">8dp</dimen>
     <dimen name="view_vertical_margin">16dp</dimen>
+
+    <!-- Default item padding. -->
+    <dimen name="item_vertical_padding">8dp</dimen>
+    <dimen name="item_horizontal_padding">8dp</dimen>
 </resources>

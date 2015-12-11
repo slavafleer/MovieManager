@@ -22,13 +22,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.slavafleer.moviemanager.Constants;
 import com.slavafleer.moviemanager.R;
+import com.slavafleer.moviemanager.adapter.MainListAdapter;
 import com.slavafleer.moviemanager.data.FileManager;
 import com.slavafleer.moviemanager.data.Movie;
 
@@ -42,11 +42,11 @@ public class MainActivity extends AppCompatActivity {
     private final static String FILE_NAME = "movieslist.txt";
 
     // Movies Collection.
-    private ArrayList<Movie> mMoviesList = new ArrayList<>();
+    private ArrayList<Movie> mMovies = new ArrayList<>();
 
     private ListView mListViewMovies;
     private TextView mEmptyMainMovieList;
-    private ArrayAdapter<Movie> mArrayAdapter;
+    private MainListAdapter mMainListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,16 +54,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Loading movie list from the file, if failed - reset the array list.
-        if(FileManager.loadFile(this, FILE_NAME, mMoviesList) == FileManager.RESULT_ERROR) {
-            mMoviesList = new ArrayList<>();
+        if(FileManager.loadFile(this, FILE_NAME, mMovies) == FileManager.RESULT_ERROR) {
+            mMovies = new ArrayList<>();
         }
 
         mListViewMovies = (ListView)findViewById(R.id.listViewMainMovies);
         mEmptyMainMovieList = (TextView)findViewById(R.id.emptyMainMovieList);
 
         // ListView adapter initialising.
-        mArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mMoviesList);
-        mListViewMovies.setAdapter(mArrayAdapter);
+//        mMainListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mMovies);
+        mMainListAdapter = new MainListAdapter(this, mMovies);
+        mListViewMovies.setAdapter(mMainListAdapter);
 
         // On Item click transferring to Editor Screen.
         mListViewMovies.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -82,9 +83,9 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.action_delete:
-                                mMoviesList.remove(position);
-                                FileManager.saveFile(MainActivity.this, FILE_NAME, mMoviesList);
-                                mArrayAdapter.notifyDataSetChanged();
+                                mMovies.remove(position);
+                                FileManager.saveFile(MainActivity.this, FILE_NAME, mMovies);
+                                mMainListAdapter.notifyDataSetChanged();
                                 break;
 
                             case R.id.action_edit:
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void transferToEditorActivity(int position) {
-        Movie movie = mMoviesList.get(position);
+        Movie movie = mMovies.get(position);
         Intent intent = new Intent(MainActivity.this, EditorActivity.class);
         intent.putExtra(Constants.KEY_ID, movie.getId());
         intent.putExtra(Constants.KEY_SUBJECT, movie.getSubject());
@@ -136,14 +137,14 @@ public class MainActivity extends AppCompatActivity {
             if(id.equals(Constants.VALUE_NEW_MOVIE)) {
                 // New Movie in list.
                 Movie movie = new Movie(subject, body, url);
-                mMoviesList.add(movie);
+                mMovies.add(movie);
 
                 // Add to file.
                 FileManager.addToFile(this, FILE_NAME, movie);
             } else {
                 int position = data.getIntExtra(Constants.KEY_POSITION, -1);
                 // Update the movie in list at id position.
-                Movie movie = mMoviesList.get(position);
+                Movie movie = mMovies.get(position);
                 movie.setSubject(subject);
                 movie.setBody(body);
                 movie.setUrl(url);
@@ -151,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 movie.setIsWatched(isWatched);
 
                 // Rewrite the file.
-                FileManager.saveFile(this, FILE_NAME, mMoviesList);
+                FileManager.saveFile(this, FILE_NAME, mMovies);
             }
         }
         // On returning from Search screen, add new movie in the list.
@@ -159,13 +160,13 @@ public class MainActivity extends AppCompatActivity {
             // New Movie in list.
             Movie movie = new Movie(id, subject, body, url);
             movie.setRating(rating);
-            mMoviesList.add(movie);
+            mMovies.add(movie);
 
             // Add to file.
             FileManager.addToFile(this, FILE_NAME, movie);
         }
 
-        mArrayAdapter.notifyDataSetChanged();
+        mMainListAdapter.notifyDataSetChanged();
     }
 
     // PlusIcon on click actions.
@@ -240,8 +241,8 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_delete_all:
                 FileManager.deleteFile(this, FILE_NAME);
-                mMoviesList.clear();
-                mArrayAdapter.notifyDataSetChanged();
+                mMovies.clear();
+                mMainListAdapter.notifyDataSetChanged();
                 break;
 
             case R.id.action_exit:
