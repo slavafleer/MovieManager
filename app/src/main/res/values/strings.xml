@@ -38,4 +38,13 @@
     <string name="editor_toast_incorrect_url">You entered incorrect Url.</string>
     <string name="editor_checkbox_watched_label">Watched</string>
 
+    <!-- Delete All Movies Confirmation Dialog -->
+    <string name="dialog_delete_all_title">Delete All Movies Confirmation</string>
+    <string name="dialog_delete_all_message">Are you sure?\nDeleted data would be lost forever.</string>
+    <string name="dialog_delete_all_positive_button_label">Delete All</string>
+
+    <!-- Delete The Movie Confirmation Dialog -->
+    <string name="dialog_delete_movie_title">Delete The Movie Confirmation</string>
+    <string name="dialog_delete_movie_positive_button_label">Delete</string>
+
 </resources>

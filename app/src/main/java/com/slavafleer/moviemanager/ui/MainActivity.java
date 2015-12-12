@@ -6,7 +6,6 @@
  * filling movie description by user himself.
  */
 
-// TODO: need to do custom adaptor for ellipsized title.
 // TODO: need to comment all methods.
 // TODO: checking for offline mode and giving possibility working in offline mode.
 // TODO: care for N/A strings from OMDB API.
@@ -28,7 +27,7 @@ import android.widget.TextView;
 
 import com.slavafleer.moviemanager.Constants;
 import com.slavafleer.moviemanager.R;
-import com.slavafleer.moviemanager.adapter.MainListAdapter;
+import com.slavafleer.moviemanager.adapters.MainListAdapter;
 import com.slavafleer.moviemanager.data.FileManager;
 import com.slavafleer.moviemanager.data.Movie;
 
@@ -62,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         mEmptyMainMovieList = (TextView)findViewById(R.id.emptyMainMovieList);
 
         // ListView adapter initialising.
-//        mMainListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mMovies);
         mMainListAdapter = new MainListAdapter(this, mMovies);
         mListViewMovies.setAdapter(mMainListAdapter);
 
@@ -74,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // On Item Long click, open menu for edit and delete options.
         mListViewMovies.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -82,10 +81,25 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
+                            // Delete the movie from list and file.
                             case R.id.action_delete:
-                                mMovies.remove(position);
-                                FileManager.saveFile(MainActivity.this, FILE_NAME, mMovies);
-                                mMainListAdapter.notifyDataSetChanged();
+                                // Open confirmation dialog.
+                                new AlertDialog.Builder(MainActivity.this)
+                                        .setTitle(R.string.dialog_delete_movie_title)
+                                        .setMessage(R.string.dialog_delete_all_message)
+                                        .setPositiveButton(R.string.dialog_delete_movie_positive_button_label,
+                                                new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                mMovies.remove(position);
+                                                FileManager.saveFile(MainActivity.this, FILE_NAME, mMovies);
+                                                mMainListAdapter.notifyDataSetChanged();
+                                            }
+                                        })
+                                        .setNegativeButton(R.string.button_cancel_label, null)
+                                        .create()
+                                        .show();
+
                                 break;
 
                             case R.id.action_edit:
@@ -198,36 +212,36 @@ public class MainActivity extends AppCompatActivity {
         popupMenu.show();
     }
 
-    // Open Alert Dialog on Plus Icon clicking for choosing
-    // adding new movie mode: manual or via internet.
-    private void openDialogForPlusIcon() {
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle(R.string.main_dialog_plus_icon_title)
-                .setMessage(R.string.main_dialog_plus_icon_message)
-                .setPositiveButton(R.string.main_dialog_plus_icon_positive_button_label,
-                        new DialogInterface.OnClickListener() {
-                    // On manual -  open Editor Screen.
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(MainActivity.this, EditorActivity.class);
-                        intent.putExtra(Constants.KEY_ID, Constants.VALUE_NEW_MOVIE);
-                        startActivityForResult(intent, REQUEST_EDITOR);
-                    }
-                })
-                .setNegativeButton(R.string.main_dialog_plus_icon_negative_button_label,
-                        new DialogInterface.OnClickListener() {
-                    // On search - open search screen.
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                        startActivityForResult(intent, REQUEST_SEARCH);
-                    }
-                })
-                .setNeutralButton(R.string.main_dialog_plus_icon_neutral_button_label, null)
-                .create();
-        dialog.setCancelable(false);
-        dialog.show();
-    }
+//    // Open Alert Dialog on Plus Icon clicking for choosing
+//    // adding new movie mode: manual or via internet.
+//    private void openDialogForPlusIcon() {
+//        AlertDialog dialog = new AlertDialog.Builder(this)
+//                .setTitle(R.string.main_dialog_plus_icon_title)
+//                .setMessage(R.string.main_dialog_plus_icon_message)
+//                .setPositiveButton(R.string.main_dialog_plus_icon_positive_button_label,
+//                        new DialogInterface.OnClickListener() {
+//                    // On manual -  open Editor Screen.
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+//                        intent.putExtra(Constants.KEY_ID, Constants.VALUE_NEW_MOVIE);
+//                        startActivityForResult(intent, REQUEST_EDITOR);
+//                    }
+//                })
+//                .setNegativeButton(R.string.main_dialog_plus_icon_negative_button_label,
+//                        new DialogInterface.OnClickListener() {
+//                    // On search - open search screen.
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+//                        startActivityForResult(intent, REQUEST_SEARCH);
+//                    }
+//                })
+//                .setNeutralButton(R.string.main_dialog_plus_icon_neutral_button_label, null)
+//                .create();
+//        dialog.setCancelable(false);
+//        dialog.show();
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -236,15 +250,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    // Main menu options.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            // Delete all movies data.
             case R.id.action_delete_all:
-                FileManager.deleteFile(this, FILE_NAME);
-                mMovies.clear();
-                mMainListAdapter.notifyDataSetChanged();
+                // Re-ask by alert dialog for confirmation.
+                new AlertDialog.Builder(this)
+                    .setTitle(R.string.dialog_delete_all_title)
+                    .setMessage(R.string.dialog_delete_all_message)
+                    .setPositiveButton(R.string.dialog_delete_all_positive_button_label,
+                            new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            FileManager.deleteFile(MainActivity.this, FILE_NAME);
+                            mMovies.clear();
+                            mMainListAdapter.notifyDataSetChanged();
+                        }
+                    })
+                    .setNegativeButton(R.string.button_cancel_label, null)
+                    .create()
+                    .show();
                 break;
 
+            // Exit from app.
             case R.id.action_exit:
                 finish();
                 break;
