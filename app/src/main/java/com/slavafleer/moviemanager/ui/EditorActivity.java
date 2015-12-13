@@ -48,14 +48,6 @@ public class EditorActivity extends AppCompatActivity {
         mRatingBar = (RatingBar)findViewById(R.id.ratingBar);
         mCheckBoxWatched = (CheckBox)findViewById(R.id.checkBoxWatched);
 
-//        // Debugging
-//        mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-//            @Override
-//            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-//                Toast.makeText(EditorActivity.this, rating + "", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
         Intent intent = getIntent();
         mPosition = intent.getIntExtra(Constants.KEY_POSITION, -1);
         mId = intent.getStringExtra(Constants.KEY_ID);

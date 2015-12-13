@@ -30,8 +30,8 @@ public class DownloadingPictureByUrlAsyncTask extends AsyncTask<URL, Void, Bitma
 
     @Override
     protected void onPreExecute() {
-        mImageViewUrl = (ImageView)mActivity.findViewById(R.id.imageViewUrl);
-        mProgressBarUrl = (ProgressBar)mActivity.findViewById(R.id.progressBarUrl);
+        mImageViewUrl = (ImageView) mActivity.findViewById(R.id.imageViewUrl);
+        mProgressBarUrl = (ProgressBar) mActivity.findViewById(R.id.progressBarUrl);
 
         mProgressBarUrl.setVisibility(View.VISIBLE);
     }

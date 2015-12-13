@@ -86,6 +86,7 @@ public class OMDbSearchAsyncTask extends AsyncTask<URL, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         try {
+            mMovies.clear();
             JSONObject jsonObject = new JSONObject(result);
             JSONArray search = jsonObject.getJSONArray(Constants.KEY_OMDB_SEARCH);
 

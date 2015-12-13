@@ -32,6 +32,7 @@
 
     <!-- Search Activity -->
     <string name="button_go_label">Go</string>
+    <string name="internet_error">No internet connection.</string>
 
     <!-- Toast messages -->
     <string name="editor_toast_no_subject">Subject must be filled.</string>

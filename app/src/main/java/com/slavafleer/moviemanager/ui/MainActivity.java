@@ -1,5 +1,5 @@
 /**
- * Movie Manager
+ * Movies Manager
  * Application for managing home movie library.
  * This app can show user's movies list on main screen,
  * searching for movie description on internet or
@@ -8,7 +8,6 @@
 
 // TODO: need to comment all methods.
 // TODO: checking for offline mode and giving possibility working in offline mode.
-// TODO: care for N/A strings from OMDB API.
 
 package com.slavafleer.moviemanager.ui;
 
