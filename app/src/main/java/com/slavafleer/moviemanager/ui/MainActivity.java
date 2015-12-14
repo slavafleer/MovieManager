@@ -6,7 +6,6 @@
  * filling movie description by user himself.
  */
 
-// TODO: need to comment all methods.
 // TODO: checking for offline mode and giving possibility working in offline mode.
 
 package com.slavafleer.moviemanager.ui;

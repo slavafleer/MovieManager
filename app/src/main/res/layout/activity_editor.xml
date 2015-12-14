@@ -172,7 +172,7 @@
                     android:text="@string/button_cancel_label"/>
 
                 <ImageView
-                    android:id="@+id/imageViewUrl"
+                    android:id="@+id/imageViewPoster"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/buttonEditorOk"
@@ -181,10 +181,11 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginRight="-32dp"
                     android:layout_toLeftOf="@+id/buttonShow"
-                    android:scaleType="fitCenter"/>
+                    android:scaleType="fitCenter"
+                    android:onClick="imageViewPoster_onClick"/>
 
                 <ProgressBar
-                    android:id="@+id/progressBarUrl"
+                    android:id="@+id/progressBarPosterDownloading"
                     style="?android:attr/progressBarStyleLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

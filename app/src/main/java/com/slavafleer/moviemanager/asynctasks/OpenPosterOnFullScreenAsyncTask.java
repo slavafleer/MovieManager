@@ -16,22 +16,21 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * AsyncTask for downloading image by URL.
+ * Downloading poster for Poster Activity.
  */
-public class DownloadingPictureByUrlAsyncTask extends AsyncTask<URL, Void, Bitmap> {
-
+public class OpenPosterOnFullScreenAsyncTask extends AsyncTask<URL, Void, Bitmap> {
     private Activity mActivity;
     private ImageView mImageViewUrl;
     private ProgressBar mProgressBarUrl;
 
-    public DownloadingPictureByUrlAsyncTask(Activity activity) {
+    public OpenPosterOnFullScreenAsyncTask(Activity activity) {
         mActivity = activity;
     }
 
     // Find views in parent activity before open new thread.
     protected void onPreExecute() {
-        mImageViewUrl = (ImageView) mActivity.findViewById(R.id.imageViewPoster);
-        mProgressBarUrl = (ProgressBar) mActivity.findViewById(R.id.progressBarPosterDownloading);
+        mImageViewUrl = (ImageView) mActivity.findViewById(R.id.imageViewFullScreenPoster);
+        mProgressBarUrl = (ProgressBar) mActivity.findViewById(R.id.progressBarPoster);
 
         // Show Progress bar while downloading.
         mProgressBarUrl.setVisibility(View.VISIBLE);

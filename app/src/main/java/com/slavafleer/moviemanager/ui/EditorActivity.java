@@ -48,7 +48,7 @@ public class EditorActivity extends AppCompatActivity {
         mEditTextSubject = (EditText)findViewById(R.id.editTextSubjectValue);
         mEditTextBody = (EditText)findViewById(R.id.editTextBodyValue);
         mEditTextUrl = (EditText)findViewById(R.id.editTextUrlValue);
-        mImageViewUrl = (ImageView)findViewById(R.id.imageViewUrl);
+        mImageViewUrl = (ImageView)findViewById(R.id.imageViewPoster);
         mRatingBar = (RatingBar)findViewById(R.id.ratingBar);
         mCheckBoxWatched = (CheckBox)findViewById(R.id.checkBoxWatched);
 
@@ -124,7 +124,7 @@ public class EditorActivity extends AppCompatActivity {
             downloadingPictureByUrlAsyncTask.execute(url);
         } catch (MalformedURLException e) {
             mImageViewUrl.setImageResource(R.drawable.android_fragmentation);
-            Toast.makeText(this, R.string.editor_toast_incorrect_url, Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, R.string.editor_toast_incorrect_url, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -152,5 +152,15 @@ public class EditorActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // Open new activity with image on full screen
+    public void imageViewPoster_onClick(View view) {
+        String url = mEditTextUrl.getText().toString().trim();
+        if(!url.equals("")) {
+            Intent intent = new Intent(this, PosterActivity.class);
+            intent.putExtra(Constants.KEY_URL, mEditTextUrl.getText().toString().trim());
+            startActivity(intent);
+        }
     }
 }

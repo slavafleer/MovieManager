@@ -79,7 +79,13 @@ public class OMDbGetMovieAsyncTask extends AsyncTask<URL, Void, String>  {
         try {
             JSONObject jsonObject = new JSONObject(result);
             String url = jsonObject.getString(Constants.KEY_OMDB_POSTER);
+            if(url.equals("N/A")) {
+                url = "";
+            }
             String body = jsonObject.getString(Constants.KEY_OMDB_PLOT);
+            if(body.equals("N/A")) {
+                body = "";
+            }
             String rating = jsonObject.getString(Constants.KEY_OMDB_METASCORE);
             if(rating.equals("N/A")) {
                 rating = "0";
