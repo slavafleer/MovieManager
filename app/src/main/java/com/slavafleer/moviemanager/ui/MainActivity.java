@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView mEmptyMainMovieList;
     private MainListAdapter mMainListAdapter;
 
-    @Override
+    // On open application create listview, load movie data from file and
+    // show it.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -101,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 break;
 
+                            // Go to Editor activity.
                             case R.id.action_edit:
                                 transferToEditorActivity(position);
                                 break;
@@ -119,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
         mListViewMovies.setEmptyView(mEmptyMainMovieList);
     }
 
+    // Transfer relevant data from Main activity to Editor activity.
     private void transferToEditorActivity(int position) {
         Movie movie = mMovies.get(position);
         Intent intent = new Intent(MainActivity.this, EditorActivity.class);
@@ -132,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_EDITOR);
     }
 
-    @Override
+    // Get data back from child activity.
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) {
             return;
@@ -182,15 +185,12 @@ public class MainActivity extends AppCompatActivity {
         mMainListAdapter.notifyDataSetChanged();
     }
 
-    // PlusIcon on click actions.
+    // Open menu for choosing adding new movie mode: manual or via internet
+    // by click on Plus icon.
     public void imageViewPlusIcon_onClick(View view) {
-/*        // Open Alert Dialog for choosing adding new movie mode: manual or via internet.
-        openDialogForPlusIcon();*/
-
         PopupMenu popupMenu = new PopupMenu(this, view);
         popupMenu.inflate(R.menu.menu_plus_button);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_plus_manual:
@@ -204,53 +204,19 @@ public class MainActivity extends AppCompatActivity {
                         startActivityForResult(intentSearch, REQUEST_SEARCH);
                         break;
                 }
-
                 return true;
             }
         });
         popupMenu.show();
     }
 
-//    // Open Alert Dialog on Plus Icon clicking for choosing
-//    // adding new movie mode: manual or via internet.
-//    private void openDialogForPlusIcon() {
-//        AlertDialog dialog = new AlertDialog.Builder(this)
-//                .setTitle(R.string.main_dialog_plus_icon_title)
-//                .setMessage(R.string.main_dialog_plus_icon_message)
-//                .setPositiveButton(R.string.main_dialog_plus_icon_positive_button_label,
-//                        new DialogInterface.OnClickListener() {
-//                    // On manual -  open Editor Screen.
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Intent intent = new Intent(MainActivity.this, EditorActivity.class);
-//                        intent.putExtra(Constants.KEY_ID, Constants.VALUE_NEW_MOVIE);
-//                        startActivityForResult(intent, REQUEST_EDITOR);
-//                    }
-//                })
-//                .setNegativeButton(R.string.main_dialog_plus_icon_negative_button_label,
-//                        new DialogInterface.OnClickListener() {
-//                    // On search - open search screen.
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-//                        startActivityForResult(intent, REQUEST_SEARCH);
-//                    }
-//                })
-//                .setNeutralButton(R.string.main_dialog_plus_icon_neutral_button_label, null)
-//                .create();
-//        dialog.setCancelable(false);
-//        dialog.show();
-//    }
-
-    @Override
+    // Create menu icon (3 dots).
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
-
     // Main menu options.
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             // Delete all movies data.
@@ -261,7 +227,6 @@ public class MainActivity extends AppCompatActivity {
                     .setMessage(R.string.dialog_delete_all_message)
                     .setPositiveButton(R.string.dialog_delete_all_positive_button_label,
                             new DialogInterface.OnClickListener() {
-                        @Override
                         public void onClick(DialogInterface dialog, int which) {
                             FileManager.deleteFile(MainActivity.this, FILE_NAME);
                             mMovies.clear();
@@ -278,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

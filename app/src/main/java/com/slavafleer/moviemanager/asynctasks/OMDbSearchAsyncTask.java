@@ -41,7 +41,8 @@ public class OMDbSearchAsyncTask extends AsyncTask<URL, Void, String> {
     }
 
 
-    @Override
+    // Find views in parent activity and show progress bar before downloading.
+    // Initialise adapter for listView in parent activity.
     protected void onPreExecute() {
         mProgressBarSearch = (ProgressBar)mActivity.findViewById(R.id.progressBarSearch);
         mListViewMovies = (ListView)mActivity.findViewById(R.id.listViewSearchMovies);
@@ -52,7 +53,7 @@ public class OMDbSearchAsyncTask extends AsyncTask<URL, Void, String> {
         mListViewMovies.setAdapter(adapter);
     }
 
-    @Override
+    // Find movies list in internet in new thread.
     protected String doInBackground(URL... params) {
         try {
             URL url = params[0];
@@ -83,7 +84,8 @@ public class OMDbSearchAsyncTask extends AsyncTask<URL, Void, String> {
         }
     }
 
-    @Override
+    // Read Json result and use received data for showing list of movies
+    // in paren activity.
     protected void onPostExecute(String result) {
         try {
             mMovies.clear();

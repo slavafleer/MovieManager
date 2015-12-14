@@ -9,7 +9,7 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 
 /**
- * Created by Slava on 07/12/2015.
+ * Methods for working with file where Movie List has saved.
  */
 public class FileManager {
 
@@ -20,6 +20,7 @@ public class FileManager {
 
     private final static String END_OF_TEXT = "!1*8@2&7#3^6";
 
+    // Create/recreate file.
     public static int saveFile(Activity activity, String fileName, ArrayList<Movie> movies) {
 
         try {
@@ -44,6 +45,7 @@ public class FileManager {
         }
     }
 
+    // Add new movie data to old file.
     public static int addToFile(Activity activity, String fileName, Movie movie) {
 
         try {
@@ -66,6 +68,7 @@ public class FileManager {
         }
     }
 
+    // Read data from file.
     public static int loadFile(Activity activity, String fileName, ArrayList<Movie> movies) {
 
         try {
@@ -104,6 +107,7 @@ public class FileManager {
         }
     }
 
+    // Delete file.
     public static int deleteFile(Activity activity, String fileName) {
         try {
             String fullPathFileName = activity.getFilesDir().getAbsolutePath() + "/" + fileName;

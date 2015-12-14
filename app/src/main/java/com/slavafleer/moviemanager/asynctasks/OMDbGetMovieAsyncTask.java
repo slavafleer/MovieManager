@@ -37,13 +37,13 @@ public class OMDbGetMovieAsyncTask extends AsyncTask<URL, Void, String>  {
         mPosition = position;
     }
 
-    @Override
+    // Find views in parent activity.
     protected void onPreExecute() {
         mProgressBarSearch = (ProgressBar)mActivity.findViewById(R.id.progressBarSearch);
         mProgressBarSearch.setVisibility(View.VISIBLE);
     }
 
-    @Override
+    // Download rest of chosen movie data in new thread.
     protected String doInBackground(URL... params) {
         try {
             URL url = params[0];
@@ -74,7 +74,7 @@ public class OMDbGetMovieAsyncTask extends AsyncTask<URL, Void, String>  {
         }
     }
 
-    @Override
+    // Return to parent movie data after finishing downloading.
     protected void onPostExecute(String result) {
         try {
             JSONObject jsonObject = new JSONObject(result);

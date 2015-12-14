@@ -20,6 +20,10 @@ import com.slavafleer.moviemanager.asynctasks.DownloadingPictureByUrlAsyncTask;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * Activity for editing movie data.
+ */
+
 public class EditorActivity extends AppCompatActivity {
 
     private EditText mEditTextSubject;
@@ -36,7 +40,7 @@ public class EditorActivity extends AppCompatActivity {
 
     private ShareActionProvider mShareActionProvider;
 
-    @Override
+    // Initialise activities views and fill them with data from Main activity.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
@@ -82,7 +86,7 @@ public class EditorActivity extends AppCompatActivity {
         }
     }
 
-    // Transfer all data to Main Activity on OK click and close this activity.
+    // Transfer all data back to Main Activity on OK click and close this activity.
     public void buttonEditorOk_onClick(View view) {
         Intent intent = new Intent();
         mSubject = mEditTextSubject.getText().toString().trim();
@@ -106,11 +110,12 @@ public class EditorActivity extends AppCompatActivity {
         finish();
     }
 
-    // Show Image from URL.
+    // Show Image from URL on click of Show button.
     public void buttonShow_onClick(View view) {
         showImageFromUrl(mEditTextUrl.getText().toString());
     }
 
+    // Download Image from internet by URL.
     private void showImageFromUrl(String urlAsString) {
         try {
             DownloadingPictureByUrlAsyncTask downloadingPictureByUrlAsyncTask =
@@ -123,20 +128,18 @@ public class EditorActivity extends AppCompatActivity {
         }
     }
 
-    @Override
+    // Create menu with share icon.
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate menu resource file.
         getMenuInflater().inflate(R.menu.menu_editor, menu);
         // Locate MenuItem with ShareActionProvider
         MenuItem item = menu.findItem(R.id.action_share);
-        // Fetch and store ShareActionProvider
-//        mShareActionProvider =(ShareActionProvider)MenuItemCompat.getActionProvider(item);
         // Return true to display menu
         return true;
     }
 
 
-    @Override
+    // Open sharing options while choosing Share icon.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_share:

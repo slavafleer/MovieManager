@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 /**
  * Custom adapter for list view in Main Activity.
- * Created for using "ellipsize" on titles of movies.
  */
 public class MainListAdapter extends ArrayAdapter<Movie> {
 
@@ -35,7 +34,6 @@ public class MainListAdapter extends ArrayAdapter<Movie> {
     }
 
     // This function will be called for each item in the list, during the list creation:
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Movie movie = mMovies.get(position);
         View itemLayout = mLayoutInflater.inflate(R.layout.adapter_main_listview_item, null);
@@ -43,6 +41,7 @@ public class MainListAdapter extends ArrayAdapter<Movie> {
                 R.id.textViewMainListItemTitle);
         textViewTitle.setText(movie.getSubject());
 
+        // Choose color by Rating.
         int rating = (int)movie.getRating();
         int color;
         switch(rating) {

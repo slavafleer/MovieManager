@@ -16,7 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by Slava on 04/12/2015.
+ * AsyncTask for downloading image by URL.
  */
 public class DownloadingPictureByUrlAsyncTask extends AsyncTask<URL, Void, Bitmap> {
 
@@ -28,15 +28,16 @@ public class DownloadingPictureByUrlAsyncTask extends AsyncTask<URL, Void, Bitma
         mActivity = activity;
     }
 
-    @Override
+    // Find views in parent activity before open new thread.
     protected void onPreExecute() {
         mImageViewUrl = (ImageView) mActivity.findViewById(R.id.imageViewUrl);
         mProgressBarUrl = (ProgressBar) mActivity.findViewById(R.id.progressBarUrl);
 
+        // Show Progress bar while downloading.
         mProgressBarUrl.setVisibility(View.VISIBLE);
     }
 
-    @Override
+    // Request for image by url in new thread and download it.
     protected Bitmap doInBackground(URL... params) {
         try {
             URL url = params[0];
@@ -67,10 +68,11 @@ public class DownloadingPictureByUrlAsyncTask extends AsyncTask<URL, Void, Bitma
         }
     }
 
-    @Override
+    // Show image after finishing download.
     protected void onPostExecute(Bitmap bitmap) {
         mImageViewUrl.setImageBitmap(bitmap);
 
+        // Hide progress bar.
         mProgressBarUrl.setVisibility(View.INVISIBLE);
     }
 }

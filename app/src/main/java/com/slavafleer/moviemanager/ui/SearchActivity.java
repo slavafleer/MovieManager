@@ -20,13 +20,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+/**
+ * Search activity for displaying list of founded movies by search words
+ * and updating the Movie collection by new data on choosing wanted movie.
+ */
 public class SearchActivity extends AppCompatActivity {
 
     private EditText mEditTextSearchValue;
     private ListView mListViewSearchMovies;
     private ArrayList<Movie> mMovies = new ArrayList<>();
 
-    @Override
+    // Initialize views and listeners.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
@@ -34,8 +38,8 @@ public class SearchActivity extends AppCompatActivity {
         mEditTextSearchValue = (EditText)findViewById(R.id.editTextSearchValue);
         mListViewSearchMovies = (ListView)findViewById(R.id.listViewSearchMovies);
 
+        // Do new internet request for movie plot by concrete movie.
         mListViewSearchMovies.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try {
                     Uri uri = Uri.parse("http://www.omdbapi.com/?")
@@ -55,6 +59,7 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
+    // Search in internet for movies with user entered words.
     public void buttonGo_onClick(View view) {
         try {
             Uri uri = Uri.parse("http://www.omdbapi.com/?")
@@ -78,6 +83,7 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
+    // Close activity on Cancel button click.
     public void buttonSearchCancel_onClick(View view) {
         finish();
     }
