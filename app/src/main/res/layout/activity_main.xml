@@ -8,24 +8,16 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.slavafleer.moviemanager.MainActivity">
+    tools:context=".ui.MainActivity">
 
     <TextView
         android:id="@+id/textViewMainTopic"
         style="@style/TopicStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:text="@string/main_topic"/>
-
-    <ImageView
-        android:id="@+id/imageViewSettingsIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textViewMainTopic"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/settings_icon"/>
+        android:text="@string/main_topic"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
 
     <ImageView
         android:id="@+id/imageViewPlusIcon"
@@ -37,7 +29,7 @@
         android:src="@drawable/plus_icon"/>
 
     <ListView
-        android:id="@android:id/list"
+        android:id="@+id/listViewMainMovies"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/imageViewPlusIcon"
@@ -45,10 +37,11 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textViewMainTopic"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"/>
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        />
 
     <TextView
-        android:id="@android:id/empty"
+        android:id="@+id/emptyMainMovieList"
         style="@style/EmptyListTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

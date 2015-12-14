@@ -1,4 +1,4 @@
-package com.slavafleer.moviemanager;
+package com.slavafleer.moviemanager.asynctasks;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -9,32 +9,34 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.slavafleer.moviemanager.R;
+
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by Slava on 04/12/2015.
+ * Downloading poster for Poster Activity.
  */
-public class DownloadingPictureByUrlAsyncTask extends AsyncTask<URL, Void, Bitmap> {
-
+public class OpenPosterOnFullScreenAsyncTask extends AsyncTask<URL, Void, Bitmap> {
     private Activity mActivity;
     private ImageView mImageViewUrl;
     private ProgressBar mProgressBarUrl;
 
-    public DownloadingPictureByUrlAsyncTask(Activity activity) {
+    public OpenPosterOnFullScreenAsyncTask(Activity activity) {
         mActivity = activity;
     }
 
-    @Override
+    // Find views in parent activity before open new thread.
     protected void onPreExecute() {
-        mImageViewUrl = (ImageView)mActivity.findViewById(R.id.imageViewUrl);
-        mProgressBarUrl = (ProgressBar)mActivity.findViewById(R.id.progressBarUrl);
+        mImageViewUrl = (ImageView) mActivity.findViewById(R.id.imageViewFullScreenPoster);
+        mProgressBarUrl = (ProgressBar) mActivity.findViewById(R.id.progressBarPoster);
 
+        // Show Progress bar while downloading.
         mProgressBarUrl.setVisibility(View.VISIBLE);
     }
 
-    @Override
+    // Request for image by url in new thread and download it.
     protected Bitmap doInBackground(URL... params) {
         try {
             URL url = params[0];
@@ -65,10 +67,11 @@ public class DownloadingPictureByUrlAsyncTask extends AsyncTask<URL, Void, Bitma
         }
     }
 
-    @Override
+    // Show image after finishing download.
     protected void onPostExecute(Bitmap bitmap) {
         mImageViewUrl.setImageBitmap(bitmap);
 
+        // Hide progress bar.
         mProgressBarUrl.setVisibility(View.INVISIBLE);
     }
 }

@@ -2,5 +2,18 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#4b5ff5</color>
+
+    <!-- Rating Colors -->
+    <color name="colorRating1">#af000e</color>
+    <color name="colorRating2">#E42100</color>
+    <color name="colorRating3">#E35600</color>
+    <color name="colorRating4">#E38A00</color>
+    <color name="colorRating5">#E2BE00</color>
+    <color name="colorRating6">#D1E200</color>
+    <color name="colorRating7">#9DE100</color>
+    <color name="colorRating8">#68E100</color>
+    <color name="colorRating9">#30cf00</color>
+    <color name="colorRating10">#01b700</color>
+    <color name="colorRatingTransparent">#00000000</color>
 </resources>

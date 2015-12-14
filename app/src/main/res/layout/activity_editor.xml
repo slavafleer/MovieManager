@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.slavafleer.moviemanager.EditorActivity">
+    tools:context=".ui.EditorActivity">
 
     <TextView
         android:id="@+id/textViewSubjectLabel"
@@ -28,7 +28,9 @@
         android:layout_marginLeft="@dimen/view_horizontal_margin"
         android:layout_toEndOf="@+id/textViewSubjectLabel"
         android:layout_toRightOf="@+id/textViewSubjectLabel"
-        android:singleLine="true"/>
+        android:inputType="textShortMessage"
+        android:singleLine="true"
+        />
 
     <TextView
         android:id="@+id/textViewBodyLabel"
@@ -53,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginLeft="@dimen/view_horizontal_margin"
-            android:layout_weight="1"
+            android:layout_weight="5"
             android:orientation="vertical">
 
             <ScrollView
@@ -65,7 +67,9 @@
                     android:id="@+id/editTextBodyValue"
                     style="@style/EditTextStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    android:background="@drawable/black_board"
+                    android:padding="@dimen/view_horizontal_margin"/>
             </ScrollView>
         </LinearLayout>
 
@@ -73,6 +77,26 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:stepSize="0.5"/>
+
+            <CheckBox
+                android:id="@+id/checkBoxWatched"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/editor_checkbox_watched_label"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -98,8 +122,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
-                    android:text="@string/editor_button_show_label"
-                    android:onClick="buttonShow_onClick"/>
+                    android:onClick="buttonShow_onClick"
+                    android:text="@string/editor_button_show_label"/>
 
                 <EditText
                     android:id="@+id/editTextUrlValue"
@@ -111,7 +135,9 @@
                     android:layout_marginLeft="@dimen/view_horizontal_margin"
                     android:layout_toLeftOf="@+id/buttonShow"
                     android:layout_toRightOf="@+id/textViewUrlLabel"
-                    android:singleLine="true"/>
+                    android:inputType="textUri"
+                    android:singleLine="true"
+                    />
 
                 <FrameLayout
                     android:id="@+id/centerAnchor"
@@ -146,7 +172,7 @@
                     android:text="@string/button_cancel_label"/>
 
                 <ImageView
-                    android:id="@+id/imageViewUrl"
+                    android:id="@+id/imageViewPoster"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/buttonEditorOk"
@@ -155,15 +181,16 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginRight="-32dp"
                     android:layout_toLeftOf="@+id/buttonShow"
-                    android:scaleType="fitCenter"/>
+                    android:scaleType="fitCenter"
+                    android:onClick="imageViewPoster_onClick"/>
 
                 <ProgressBar
+                    android:id="@+id/progressBarPosterDownloading"
                     style="?android:attr/progressBarStyleLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/progressBarUrl"
-                    android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
                     android:visibility="invisible"/>
             </RelativeLayout>
         </LinearLayout>

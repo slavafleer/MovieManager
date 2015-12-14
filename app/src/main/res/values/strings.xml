@@ -1,19 +1,51 @@
 <resources>
-    <string name="app_name">MovieManager</string>
+    <string name="app_name">Movies Manager</string>
 
     <!-- Main Activity -->
     <string name="main_topic">My Movies</string>
-    <string name="main_empty_list_text">You have no any movie\nin your list.\nPress on Plus Icon below\nfor adding a new movie.</string>
+    <string name="main_empty_list_text">You have no any movie\nin your list.\nPress on Plus Icon below,\nfor adding a new movie.</string>
     <string name="editor_textview_subject_label">Subject:</string>
+
+    <!-- Alert Dialog for Plus Icon -->
+    <string name="main_dialog_plus_icon_title">Add a new movie:</string>
+    <string name="main_dialog_plus_icon_message">Choose between manual and internet search options.</string>
+    <string name="main_dialog_plus_icon_positive_button_label">Manual</string>
+    <string name="main_dialog_plus_icon_negative_button_label">Search</string>
+    <string name="main_dialog_plus_icon_neutral_button_label">Abort</string>
+
+    <!-- Main Menu -->
+    <string name="menu_main_delete_all_title">Delete All</string>
+    <string name="menu_main_exit_title">Exit</string>
+
+    <!-- Popup Menus -->
+    <string name="menu_item_delete_title">Delete</string>
+    <string name="menu_item_edit_title">Edit</string>
+    <string name="menu_plus_button_search_title">Search</string>
+    <string name="menu_plus_button_manual_title">Manual</string>
 
     <!-- Editor Activity -->
     <string name="editor_textview_body_label">Body:</string>
-    <string name="editor_textview_url_label">URL</string>
+    <string name="editor_textview_url_label">URL:</string>
     <string name="editor_button_show_label">Show</string>
     <string name="button_ok_label">OK</string>
     <string name="button_cancel_label">Cancel</string>
 
+    <!-- Search Activity -->
+    <string name="button_go_label">Go</string>
+    <string name="internet_error">No internet connection.</string>
+
     <!-- Toast messages -->
     <string name="editor_toast_no_subject">Subject must be filled.</string>
     <string name="editor_toast_incorrect_url">You entered incorrect Url.</string>
+    <string name="editor_checkbox_watched_label">Watched</string>
+
+    <!-- Delete All Movies Confirmation Dialog -->
+    <string name="dialog_delete_all_title">Delete All Movies Confirmation</string>
+    <string name="dialog_delete_all_message">Are you sure?\nDeleted data would be lost forever.</string>
+    <string name="dialog_delete_all_positive_button_label">Delete All</string>
+
+    <!-- Delete The Movie Confirmation Dialog -->
+    <string name="dialog_delete_movie_title">Delete The Movie Confirmation</string>
+    <string name="dialog_delete_movie_positive_button_label">Delete</string>
+
 </resources>
