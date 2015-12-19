@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.slavafleer.moviemanager.Constants;
 import com.slavafleer.moviemanager.R;
-import com.slavafleer.moviemanager.asynctasks.OMDbImageDownloaderAsyncTask;
+import com.slavafleer.moviemanager.asynctask.OMDbImageDownloaderAsyncTask;
 
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -194,5 +194,8 @@ public class EditorActivity extends AppCompatActivity
                     ": " + errorMessage, Toast.LENGTH_LONG).show();
             mImageViewUrl.setImageResource(R.drawable.android_error);
         }
+
+        // Hide progress bar.
+        mProgressBarUrl.setVisibility(View.INVISIBLE);
     }
 }

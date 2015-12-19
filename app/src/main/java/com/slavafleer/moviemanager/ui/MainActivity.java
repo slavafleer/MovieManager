@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 import com.slavafleer.moviemanager.Constants;
 import com.slavafleer.moviemanager.R;
-import com.slavafleer.moviemanager.adapters.MainListAdapter;
+import com.slavafleer.moviemanager.adapter.MainListAdapter;
 import com.slavafleer.moviemanager.data.FileManager;
 import com.slavafleer.moviemanager.data.Movie;
 

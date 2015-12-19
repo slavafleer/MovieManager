@@ -1,4 +1,4 @@
-package com.slavafleer.moviemanager.asynctasks;
+package com.slavafleer.moviemanager.asynctask;
 
 import android.app.Activity;
 import android.content.Intent;

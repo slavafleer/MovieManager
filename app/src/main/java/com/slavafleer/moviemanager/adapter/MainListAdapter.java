@@ -1,4 +1,4 @@
-package com.slavafleer.moviemanager.adapters;
+package com.slavafleer.moviemanager.adapter;
 
 import android.app.Activity;
 import android.content.Context;

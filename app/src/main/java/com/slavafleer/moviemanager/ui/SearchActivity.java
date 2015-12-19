@@ -12,8 +12,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.slavafleer.moviemanager.R;
-import com.slavafleer.moviemanager.asynctasks.OMDbGetMovieAsyncTask;
-import com.slavafleer.moviemanager.asynctasks.OMDbSearchAsyncTask;
+import com.slavafleer.moviemanager.asynctask.OMDbGetMovieAsyncTask;
+import com.slavafleer.moviemanager.asynctask.OMDbSearchAsyncTask;
 import com.slavafleer.moviemanager.data.Movie;
 
 import java.net.MalformedURLException;
