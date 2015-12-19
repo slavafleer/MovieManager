@@ -1,22 +1,24 @@
 package com.slavafleer.moviemanager.ui;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.slavafleer.moviemanager.Constants;
 import com.slavafleer.moviemanager.R;
-import com.slavafleer.moviemanager.asynctasks.DownloadingPictureByUrlAsyncTask;
+import com.slavafleer.moviemanager.asynctasks.OMDbImageDownloaderAsyncTask;
 
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -24,12 +26,14 @@ import java.net.URL;
  * Activity for editing movie data.
  */
 
-public class EditorActivity extends AppCompatActivity {
+public class EditorActivity extends AppCompatActivity
+        implements OMDbImageDownloaderAsyncTask.Callbacks {
 
     private EditText mEditTextSubject;
     private EditText mEditTextBody;
     private EditText mEditTextUrl;
     private ImageView mImageViewUrl;
+    private ProgressBar mProgressBarUrl;
     private RatingBar mRatingBar;
     private CheckBox mCheckBoxWatched;
 
@@ -37,8 +41,6 @@ public class EditorActivity extends AppCompatActivity {
     private int mPosition;
     private String mSubject;
     private String mBody;
-
-    private ShareActionProvider mShareActionProvider;
 
     // Initialise activities views and fill them with data from Main activity.
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class EditorActivity extends AppCompatActivity {
         mEditTextBody = (EditText)findViewById(R.id.editTextBodyValue);
         mEditTextUrl = (EditText)findViewById(R.id.editTextUrlValue);
         mImageViewUrl = (ImageView)findViewById(R.id.imageViewPoster);
+        mProgressBarUrl = (ProgressBar)findViewById(R.id.progressBarPosterDownloading);
         mRatingBar = (RatingBar)findViewById(R.id.ratingBar);
         mCheckBoxWatched = (CheckBox)findViewById(R.id.checkBoxWatched);
 
@@ -118,8 +121,8 @@ public class EditorActivity extends AppCompatActivity {
     // Download Image from internet by URL.
     private void showImageFromUrl(String urlAsString) {
         try {
-            DownloadingPictureByUrlAsyncTask downloadingPictureByUrlAsyncTask =
-                new DownloadingPictureByUrlAsyncTask(this);
+            OMDbImageDownloaderAsyncTask downloadingPictureByUrlAsyncTask =
+                new OMDbImageDownloaderAsyncTask(this);
             URL url = new URL(urlAsString);
             downloadingPictureByUrlAsyncTask.execute(url);
         } catch (MalformedURLException e) {
@@ -161,6 +164,35 @@ public class EditorActivity extends AppCompatActivity {
             Intent intent = new Intent(this, PosterActivity.class);
             intent.putExtra(Constants.KEY_URL, mEditTextUrl.getText().toString().trim());
             startActivity(intent);
+        }
+    }
+
+    //Actions while OMDbImageDownloaderAsyncTask is created.
+    // Do it before new thread creating.
+    public void onAboutToStart() {
+
+        // Show Progress bar while downloading.
+        mProgressBarUrl.setVisibility(View.VISIBLE);
+    }
+
+    // Set image in layout and hide progress bar.
+    public void onImageDownloadSuccess(Bitmap bitmap) {
+
+        mImageViewUrl.setImageBitmap(bitmap);
+
+        // Hide progress bar.
+        mProgressBarUrl.setVisibility(View.INVISIBLE);
+    }
+
+    // Set different images on errors from OMDbImageDownloaderAsyncTask.
+    public void onImageDownloadError(int httpStatusCode, String errorMessage) {
+
+        if (httpStatusCode == HttpURLConnection.HTTP_NOT_FOUND) {
+            mImageViewUrl.setImageResource(R.drawable.page_not_found);
+        } else if (httpStatusCode != HttpURLConnection.HTTP_OK || errorMessage != null) {
+            Toast.makeText(this, "Error " + httpStatusCode +
+                    ": " + errorMessage, Toast.LENGTH_LONG).show();
+            mImageViewUrl.setImageResource(R.drawable.android_error);
         }
     }
 }
