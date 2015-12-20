@@ -190,8 +190,8 @@ public class EditorActivity extends AppCompatActivity
         if (httpStatusCode == HttpURLConnection.HTTP_NOT_FOUND) {
             mImageViewUrl.setImageResource(R.drawable.page_not_found);
         } else if (httpStatusCode != HttpURLConnection.HTTP_OK || errorMessage != null) {
-            Toast.makeText(this, "Error " + httpStatusCode +
-                    ": " + errorMessage, Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Error " + httpStatusCode +
+//                    ": " + errorMessage, Toast.LENGTH_LONG).show();
             mImageViewUrl.setImageResource(R.drawable.android_error);
         }
 

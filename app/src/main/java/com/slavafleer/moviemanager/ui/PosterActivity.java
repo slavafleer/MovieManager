@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.slavafleer.moviemanager.Constants;
 import com.slavafleer.moviemanager.R;
@@ -88,8 +87,8 @@ public class PosterActivity extends AppCompatActivity
         if (httpStatusCode == HttpURLConnection.HTTP_NOT_FOUND) {
             mImageViewPoster.setImageResource(R.drawable.page_not_found);
         } else if (httpStatusCode != HttpURLConnection.HTTP_OK || errorMessage != null) {
-            Toast.makeText(this, "Error " + httpStatusCode +
-                    ": " + errorMessage, Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Error " + httpStatusCode +
+//                    ": " + errorMessage, Toast.LENGTH_LONG).show();
             mImageViewPoster.setImageResource(R.drawable.android_error);
         }
 
