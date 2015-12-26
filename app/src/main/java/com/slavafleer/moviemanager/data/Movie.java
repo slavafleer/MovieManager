@@ -32,6 +32,7 @@ public class Movie {
     }
 
     public Movie(String subject, String body, String url, float rating, boolean isWatched) {
+        setId("m" + ++counter);
         this.subject = subject;
         this.body = body;
         this.url = url;
