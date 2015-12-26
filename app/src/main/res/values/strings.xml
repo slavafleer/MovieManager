@@ -47,5 +47,5 @@
     <!-- Delete The Movie Confirmation Dialog -->
     <string name="dialog_delete_movie_title">Delete The Movie Confirmation</string>
     <string name="dialog_delete_movie_positive_button_label">Delete</string>
-    
+
 </resources>
