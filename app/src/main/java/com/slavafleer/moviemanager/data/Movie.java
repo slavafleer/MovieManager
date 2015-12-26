@@ -31,13 +31,31 @@ public class Movie {
         this.url = url;
     }
 
+    public Movie(String subject, String body, String url, float rating, boolean isWatched) {
+        this.subject = subject;
+        this.body = body;
+        this.url = url;
+        setRating(rating);
+        this.isWatched = isWatched;
+    }
+
     public Movie(String id, String subject, String body, String url, float rating, boolean isWatched) {
         this.id = id;
         this.subject = subject;
         this.body = body;
         this.url = url;
-        this.rating = rating;
+        setRating(rating);
         this.isWatched = isWatched;
+    }
+
+    public static int getCounter() {
+        return counter;
+    }
+
+    public static void setCounter(int counter) {
+        if(counter >= 0) {
+            Movie.counter = counter;
+        }
     }
 
     public String getId() {
@@ -72,16 +90,6 @@ public class Movie {
         this.url = url;
     }
 
-    public static int getCounter() {
-        return counter;
-    }
-
-    public static void setCounter(int counter) {
-        if(counter >= 0) {
-            Movie.counter = counter;
-        }
-    }
-
     public boolean getIsWatched() {
         return isWatched;
     }
@@ -95,7 +103,9 @@ public class Movie {
     }
 
     public void setRating(float rating) {
-        this.rating = rating;
+        if(rating >= 0 && rating <= 10) {
+            this.rating = rating;
+        }
     }
 
     @Override

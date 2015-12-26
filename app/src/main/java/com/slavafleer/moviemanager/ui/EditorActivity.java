@@ -23,7 +23,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Activity for editing movie data.
+ * Activity for editing movie data or adding a new movie by manual.
  */
 
 public class EditorActivity extends AppCompatActivity
@@ -167,7 +167,7 @@ public class EditorActivity extends AppCompatActivity
         }
     }
 
-    //Actions while OMDbImageDownloaderAsyncTask is created.
+    // Actions while OMDbImageDownloaderAsyncTask is created.
     // Do it before new thread creating.
     public void onAboutToStart() {
 

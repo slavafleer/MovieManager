@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_EDITOR) {
             if(id.equals(Constants.VALUE_NEW_MOVIE)) {
                 // New Movie in list.
-                Movie movie = new Movie(subject, body, url);
+                Movie movie = new Movie(subject, body, url, rating, isWatched);
                 mMovies.add(movie);
 
                 // Add to file.
