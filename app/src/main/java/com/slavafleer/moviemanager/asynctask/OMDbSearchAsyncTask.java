@@ -1,15 +1,8 @@
 package com.slavafleer.moviemanager.asynctask;
 
-import android.app.Activity;
 import android.os.AsyncTask;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.slavafleer.moviemanager.Constants;
-import com.slavafleer.moviemanager.R;
 import com.slavafleer.moviemanager.data.Movie;
 
 import org.json.JSONArray;
@@ -27,42 +20,37 @@ import java.util.ArrayList;
  * This Async Task searches in OMDb data for wanted movie title
  * and returning all movies with positive answer (in Json).
  */
-public class OMDbSearchAsyncTask extends AsyncTask<URL, Void, String> {
+public class OMDbSearchAsyncTask extends AsyncTask<URL, Void, ArrayList<Movie>> {
 
-    private Activity mActivity;
-    private ProgressBar mProgressBarSearch;
-    private ArrayAdapter<Movie> adapter;
-    private ArrayList<Movie> mMovies;
-    private ListView mListViewMovies;
+    private Callbacks mCallbacks;
+    private int mHttpResponseCode;
+    private String mErrorMessage = null;
 
-    public OMDbSearchAsyncTask(Activity activity, ArrayList<Movie> movies) {
-        mActivity = activity;
-        mMovies = movies;
+    public OMDbSearchAsyncTask(Callbacks callbacks) {
+
+        mCallbacks = callbacks;
     }
 
 
     // Find views in parent activity and show progress bar before downloading.
     // Initialise adapter for listView in parent activity.
     protected void onPreExecute() {
-        mProgressBarSearch = (ProgressBar)mActivity.findViewById(R.id.progressBarSearch);
-        mListViewMovies = (ListView)mActivity.findViewById(R.id.listViewSearchMovies);
 
-        mProgressBarSearch.setVisibility(View.VISIBLE);
-
-        adapter = new ArrayAdapter<>(mActivity, android.R.layout.simple_list_item_1, mMovies);
-        mListViewMovies.setAdapter(adapter);
+        mCallbacks.onAboutToStart();
     }
 
     // Find movies list in internet in new thread.
-    protected String doInBackground(URL... params) {
+    protected ArrayList<Movie> doInBackground(URL... params) {
         try {
             URL url = params[0];
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            int httpResponseCode = connection.getResponseCode();
+            mHttpResponseCode = connection.getResponseCode();
 
-            if(httpResponseCode != HttpURLConnection.HTTP_OK) {
-                return "Error Code: " + httpResponseCode +
+            if (mHttpResponseCode != HttpURLConnection.HTTP_OK) {
+                mErrorMessage = "Error Code: " + mHttpResponseCode +
                         "\nError Message: " + connection.getResponseMessage();
+
+                return null;
             }
 
             InputStream inputStream = connection.getInputStream();
@@ -73,35 +61,61 @@ public class OMDbSearchAsyncTask extends AsyncTask<URL, Void, String> {
 
             String oneLine = bufferedReader.readLine();
 
-            while(oneLine != null) {
+            while (oneLine != null) {
                 result += oneLine + "\n";
                 oneLine = bufferedReader.readLine();
             }
 
-            return result;
+            ArrayList<Movie> movies = new ArrayList<>();
+
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray search = jsonObject.getJSONArray(Constants.KEY_OMDB_SEARCH);
+
+                for (int i = 0; i < search.length(); i++) {
+                    String id = search.getJSONObject(i).getString(Constants.KEY_OMDB_ID);
+                    String title = search.getJSONObject(i).getString(Constants.KEY_OMDB_TITLE);
+                    movies.add(new Movie(id, title, "", ""));
+                }
+
+                return movies;
+
+            } catch (JSONException e) {
+                if (e.getMessage().equals("No value for Search")) {
+                    mErrorMessage = "Enter correct movie tittle or part of it.";
+                } else {
+                    mErrorMessage = "Error: " + e.getMessage();
+                }
+
+                return null;
+            }
+
+
         } catch (Exception e) {
-            return "Error: " + e.getMessage();
+            mErrorMessage = "Error: " + e.getMessage();
+
+            return null;
         }
     }
 
     // Read Json result and use received data for showing list of movies
-    // in paren activity.
-    protected void onPostExecute(String result) {
-        try {
-            mMovies.clear();
-            JSONObject jsonObject = new JSONObject(result);
-            JSONArray search = jsonObject.getJSONArray(Constants.KEY_OMDB_SEARCH);
+    // in parent activity.
+    protected void onPostExecute(ArrayList<Movie> movies) {
 
-            for(int i = 0; i < search.length(); i++) {
-                String id = search.getJSONObject(i).getString(Constants.KEY_OMDB_ID);
-                String title = search.getJSONObject(i).getString(Constants.KEY_OMDB_TITLE);
-                mMovies.add(new Movie(id, title, "", ""));
-            }
-            adapter.notifyDataSetChanged();
-
-        } catch (JSONException e) {
-            Toast.makeText(mActivity, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        if (mErrorMessage == null) {
+            mCallbacks.onSuccess(movies);
+        } else {
+            mCallbacks.onError(mErrorMessage);
         }
-        mProgressBarSearch.setVisibility(View.INVISIBLE);
+    }
+
+    // Interface for UI callbacks.
+    public interface Callbacks {
+
+        void onAboutToStart();
+
+        void onSuccess(ArrayList<Movie> movies);
+
+        void onError(String errorMessage);
     }
 }

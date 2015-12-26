@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.slavafleer.moviemanager.R;
@@ -24,11 +26,15 @@ import java.util.ArrayList;
  * Search activity for displaying list of founded movies by search words
  * and updating the Movie collection by new data on choosing wanted movie.
  */
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity
+        implements OMDbSearchAsyncTask.Callbacks {
 
     private EditText mEditTextSearchValue;
     private ListView mListViewSearchMovies;
     private ArrayList<Movie> mMovies = new ArrayList<>();
+
+    private ProgressBar mProgressBarSearch;
+    private ArrayAdapter<Movie> adapter;
 
     // Initialize views and listeners.
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,10 @@ public class SearchActivity extends AppCompatActivity {
 
         mEditTextSearchValue = (EditText)findViewById(R.id.editTextSearchValue);
         mListViewSearchMovies = (ListView)findViewById(R.id.listViewSearchMovies);
+        mProgressBarSearch = (ProgressBar)findViewById(R.id.progressBarSearch);
+
+//        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mMovies);
+//        mListViewSearchMovies.setAdapter(adapter);
 
         // Do new internet request for movie plot by concrete movie.
         mListViewSearchMovies.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -68,7 +78,7 @@ public class SearchActivity extends AppCompatActivity {
                     .build();
             URL url = new URL(uri.toString());
 
-            OMDbSearchAsyncTask omdbSearchAsyncTask = new OMDbSearchAsyncTask(this, mMovies);
+            OMDbSearchAsyncTask omdbSearchAsyncTask = new OMDbSearchAsyncTask(this);
             omdbSearchAsyncTask.execute(url);
 
             // Hide soft keyboard after searching.
@@ -86,5 +96,31 @@ public class SearchActivity extends AppCompatActivity {
     // Close activity on Cancel button click.
     public void buttonSearchCancel_onClick(View view) {
         finish();
+    }
+
+    // Actions while OMDbSearchAsyncTask is created:
+    //
+    // Do it before new thread creating.
+    public void onAboutToStart() {
+
+        mProgressBarSearch.setVisibility(View.VISIBLE);
+    }
+
+    // Bring founded movies to ListView.
+    public void onSuccess(ArrayList<Movie> movies) {
+
+        mMovies = movies;
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mMovies);
+        mListViewSearchMovies.setAdapter(adapter);
+
+        mProgressBarSearch.setVisibility(View.INVISIBLE);
+    }
+
+    // Show error toast on async task error.
+    public void onError(String errorMessage) {
+
+        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+
+        mProgressBarSearch.setVisibility(View.INVISIBLE);
     }
 }

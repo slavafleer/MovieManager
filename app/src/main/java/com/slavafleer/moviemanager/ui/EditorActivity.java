@@ -167,7 +167,8 @@ public class EditorActivity extends AppCompatActivity
         }
     }
 
-    // Actions while OMDbImageDownloaderAsyncTask is created.
+    // Actions while OMDbImageDownloaderAsyncTask is created:
+    //
     // Do it before new thread creating.
     public void onAboutToStart() {
 
