@@ -13,6 +13,7 @@ package com.slavafleer.moviemanager.ui;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -21,17 +22,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.slavafleer.moviemanager.Constants;
 import com.slavafleer.moviemanager.R;
 import com.slavafleer.moviemanager.adapter.MainListAdapter;
+import com.slavafleer.moviemanager.asynctask.OMDbGetMovieAsyncTask;
 import com.slavafleer.moviemanager.data.FileManager;
 import com.slavafleer.moviemanager.data.Movie;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OMDbGetMovieAsyncTask.Callbacks {
 
     private final static int REQUEST_EDITOR = 1;
     private final static int REQUEST_SEARCH = 2;
@@ -44,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView mListViewMovies;
     private TextView mEmptyMainMovieList;
     private MainListAdapter mMainListAdapter;
+    private ProgressBar mProgressBarSearch;
 
     // On open application create listview, load movie data from file and
     // show it.
@@ -243,5 +247,22 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // Actions while OMDbGetMovieAsyncTask is created:
+    //
+    // Do it before new thread creating.
+        public void onAboutToStart() {
+
+        mProgressBarSearch = (ProgressBar)findViewById(R.id.progressBarSearch);
+        mProgressBarSearch.setVisibility(View.VISIBLE);
+    }
+
+    public void onImageDownloadSuccess(Bitmap bitmap) {
+
+    }
+
+    public void onImageDownloadError(int httpStatusCode, String errorMessage) {
+
     }
 }
