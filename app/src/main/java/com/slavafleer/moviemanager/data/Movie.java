@@ -2,7 +2,9 @@ package com.slavafleer.moviemanager.data;
 
 public class Movie {
 
-    /** Id given automatically to each object creating. */
+    /**
+     * Id given automatically to each object creating.
+     */
     private static int counter = 0;
 
     private String id;
@@ -54,7 +56,7 @@ public class Movie {
     }
 
     public static void setCounter(int counter) {
-        if(counter >= 0) {
+        if (counter >= 0) {
             Movie.counter = counter;
         }
     }
@@ -104,7 +106,7 @@ public class Movie {
     }
 
     public void setRating(float rating) {
-        if(rating >= 0 && rating <= 10) {
+        if (rating >= 0 && rating <= 10) {
             this.rating = rating;
         }
     }

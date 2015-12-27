@@ -32,7 +32,7 @@ public class PosterActivity extends AppCompatActivity
         setContentView(R.layout.activity_poster);
 
         mImageViewPoster = (ImageView) findViewById(R.id.imageViewFullScreenPoster);
-        mProgressBarPoster = (ProgressBar)findViewById(R.id.progressBarPoster);
+        mProgressBarPoster = (ProgressBar) findViewById(R.id.progressBarPoster);
 
         Intent intent = getIntent();
         String urlAsString = intent.getStringExtra(Constants.KEY_URL);
@@ -51,12 +51,12 @@ public class PosterActivity extends AppCompatActivity
 
     // Return to parent activity while Home button pressed.
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 break;
         }
-        return  true;
+        return true;
     }
 
     // Close Poster Activity on image touch.

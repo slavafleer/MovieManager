@@ -41,7 +41,7 @@ public class MainListAdapter extends ArrayAdapter<Movie>
         mActivity = activity;
         mMovies = movies;
 
-        mLayoutInflater = (LayoutInflater)activity.getSystemService(
+        mLayoutInflater = (LayoutInflater) activity.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -55,9 +55,9 @@ public class MainListAdapter extends ArrayAdapter<Movie>
         textViewTitle.setText(movie.getSubject());
 
         // Choose color by Rating.
-        int rating = (int)movie.getRating();
+        int rating = (int) movie.getRating();
         int color;
-        switch(rating) {
+        switch (rating) {
             case 1:
                 color = ContextCompat.getColor(mActivity, R.color.colorRating1);
                 break;
@@ -106,7 +106,7 @@ public class MainListAdapter extends ArrayAdapter<Movie>
          * It must be on same star!!!
          * */
         float ratingFloat = rating / 2f;
-        if((ratingFloat * 10) % 10 != 0 ) {
+        if ((ratingFloat * 10) % 10 != 0) {
             ratingBar.setRating(ratingFloat + 0.5f);
         }
         ratingBar.setRating(ratingFloat);
@@ -114,7 +114,7 @@ public class MainListAdapter extends ArrayAdapter<Movie>
         boolean isWatched = movie.getIsWatched();
         ImageView imageViewIsWatched = (ImageView)
                 itemLayout.findViewById(R.id.imageViewItemIsWatched);
-        if(isWatched) {
+        if (isWatched) {
             imageViewIsWatched.setVisibility(View.VISIBLE);
         } else {
             imageViewIsWatched.setVisibility(View.INVISIBLE);

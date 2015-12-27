@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.slavafleer.moviemanager.Helper;
 import com.slavafleer.moviemanager.R;
 import com.slavafleer.moviemanager.asynctask.OMDbGetMovieAsyncTask;
 import com.slavafleer.moviemanager.asynctask.OMDbSearchAsyncTask;
@@ -41,9 +42,9 @@ public class SearchActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        mEditTextSearchValue = (EditText)findViewById(R.id.editTextSearchValue);
-        mListViewSearchMovies = (ListView)findViewById(R.id.listViewSearchMovies);
-        mProgressBarSearch = (ProgressBar)findViewById(R.id.progressBarSearch);
+        mEditTextSearchValue = (EditText) findViewById(R.id.editTextSearchValue);
+        mListViewSearchMovies = (ListView) findViewById(R.id.listViewSearchMovies);
+        mProgressBarSearch = (ProgressBar) findViewById(R.id.progressBarSearch);
 
 //        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mMovies);
 //        mListViewSearchMovies.setAdapter(adapter);
@@ -71,25 +72,29 @@ public class SearchActivity extends AppCompatActivity
 
     // Search in internet for movies with user entered words.
     public void buttonGo_onClick(View view) {
-        try {
-            Uri uri = Uri.parse("http://www.omdbapi.com/?")
-                    .buildUpon()
-                    .appendQueryParameter("s", mEditTextSearchValue.getText().toString().trim())
-                    .build();
-            URL url = new URL(uri.toString());
+        if (Helper.isNetworkAvailable(SearchActivity.this)) {
+            try {
+                Uri uri = Uri.parse("http://www.omdbapi.com/?")
+                        .buildUpon()
+                        .appendQueryParameter("s", mEditTextSearchValue.getText().toString().trim())
+                        .build();
+                URL url = new URL(uri.toString());
 
-            OMDbSearchAsyncTask omdbSearchAsyncTask = new OMDbSearchAsyncTask(this);
-            omdbSearchAsyncTask.execute(url);
+                OMDbSearchAsyncTask omdbSearchAsyncTask = new OMDbSearchAsyncTask(this);
+                omdbSearchAsyncTask.execute(url);
 
-            // Hide soft keyboard after searching.
-            // Check if no view has focus:
-            View focusedView = this.getCurrentFocus();
-            if (focusedView != null) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                // Hide soft keyboard after searching.
+                // Check if no view has focus:
+                View focusedView = this.getCurrentFocus();
+                if (focusedView != null) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            } catch (MalformedURLException e) {
+                Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
-        } catch (MalformedURLException e) {
-            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(SearchActivity.this, R.string.no_internet_connection_warning, Toast.LENGTH_LONG).show();
         }
     }
 

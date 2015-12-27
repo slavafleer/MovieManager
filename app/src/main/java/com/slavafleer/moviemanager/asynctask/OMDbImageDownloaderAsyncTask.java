@@ -56,7 +56,8 @@ public class OMDbImageDownloaderAsyncTask extends AsyncTask<URL, Void, Bitmap> {
             try {
                 inputStream.close();
                 connection.disconnect();
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
 
         }
     }
@@ -64,7 +65,7 @@ public class OMDbImageDownloaderAsyncTask extends AsyncTask<URL, Void, Bitmap> {
     // Return to UI thread image or error message.
     protected void onPostExecute(Bitmap bitmap) {
 
-        if(mErrorMessage == null) {
+        if (mErrorMessage == null) {
             mCallbacks.onImageDownloadSuccess(bitmap);
         } else {
             mCallbacks.onImageDownloadError(mHttpStatusCode, mErrorMessage);
@@ -75,7 +76,9 @@ public class OMDbImageDownloaderAsyncTask extends AsyncTask<URL, Void, Bitmap> {
     public interface Callbacks {
 
         void onAboutToStart();
+
         void onImageDownloadSuccess(Bitmap bitmap);
+
         void onImageDownloadError(int httpStatusCode, String errorMessage);
     }
 }

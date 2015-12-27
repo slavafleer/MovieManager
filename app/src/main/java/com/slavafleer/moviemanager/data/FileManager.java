@@ -27,7 +27,7 @@ public class FileManager {
             String fullPathFileName = activity.getFilesDir().getAbsolutePath() + "/" + fileName;
             FileWriter fileWriter = new FileWriter(fullPathFileName);
 
-            for(int i = 0; i < movies.size(); i++) {
+            for (int i = 0; i < movies.size(); i++) {
                 fileWriter.write(movies.get(i).getId() + "\r\n");
                 fileWriter.write(movies.get(i).getSubject() + "\r\n");
                 fileWriter.write(movies.get(i).getBody() + "\r\n" + END_OF_TEXT + "\r\n");
@@ -77,14 +77,14 @@ public class FileManager {
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             String oneLine = bufferedReader.readLine();
-            while(oneLine != null) {
+            while (oneLine != null) {
                 String id = oneLine;
                 String subject = bufferedReader.readLine();
                 // Take care for multiply line text.
                 String body = "";
                 oneLine = bufferedReader.readLine();
                 body = oneLine + "\n";
-                while(!oneLine.equals(END_OF_TEXT)) {
+                while (!oneLine.equals(END_OF_TEXT)) {
                     body += oneLine + "\n";
                     oneLine = bufferedReader.readLine();
                 }

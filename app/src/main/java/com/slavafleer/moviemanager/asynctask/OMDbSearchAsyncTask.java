@@ -107,7 +107,8 @@ public class OMDbSearchAsyncTask extends AsyncTask<URL, Void, ArrayList<Movie>> 
                 inputStreamReader.close();
                 inputStream.close();
                 connection.disconnect();
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
         }
     }
 

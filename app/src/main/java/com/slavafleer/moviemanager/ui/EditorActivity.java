@@ -15,6 +15,7 @@ import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.slavafleer.moviemanager.Constants;
+import com.slavafleer.moviemanager.Helper;
 import com.slavafleer.moviemanager.R;
 import com.slavafleer.moviemanager.asynctask.OMDbImageDownloaderAsyncTask;
 
@@ -47,19 +48,19 @@ public class EditorActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
-        mEditTextSubject = (EditText)findViewById(R.id.editTextSubjectValue);
-        mEditTextBody = (EditText)findViewById(R.id.editTextBodyValue);
-        mEditTextUrl = (EditText)findViewById(R.id.editTextUrlValue);
-        mImageViewUrl = (ImageView)findViewById(R.id.imageViewPoster);
-        mProgressBarUrl = (ProgressBar)findViewById(R.id.progressBarPosterDownloading);
-        mRatingBar = (RatingBar)findViewById(R.id.ratingBar);
-        mCheckBoxWatched = (CheckBox)findViewById(R.id.checkBoxWatched);
+        mEditTextSubject = (EditText) findViewById(R.id.editTextSubjectValue);
+        mEditTextBody = (EditText) findViewById(R.id.editTextBodyValue);
+        mEditTextUrl = (EditText) findViewById(R.id.editTextUrlValue);
+        mImageViewUrl = (ImageView) findViewById(R.id.imageViewPoster);
+        mProgressBarUrl = (ProgressBar) findViewById(R.id.progressBarPosterDownloading);
+        mRatingBar = (RatingBar) findViewById(R.id.ratingBar);
+        mCheckBoxWatched = (CheckBox) findViewById(R.id.checkBoxWatched);
 
         Intent intent = getIntent();
         mPosition = intent.getIntExtra(Constants.KEY_POSITION, -1);
         mId = intent.getStringExtra(Constants.KEY_ID);
         // If received properly mId , continue receiving rest of data.
-        if(!mId.equals(Constants.VALUE_NEW_MOVIE)) {
+        if (!mId.equals(Constants.VALUE_NEW_MOVIE)) {
             mSubject = intent.getStringExtra(Constants.KEY_SUBJECT);
             mEditTextSubject.setText(mSubject);
             mBody = intent.getStringExtra(Constants.KEY_BODY);
@@ -75,7 +76,7 @@ public class EditorActivity extends AppCompatActivity
              * It must be on same star!!!
              * */
             float rating = intent.getFloatExtra(Constants.KEY_RATING, 0) / 2f;
-            if((rating * 10) % 10 != 0 ) {
+            if ((rating * 10) % 10 != 0) {
                 mRatingBar.setRating(rating + 0.5f);
             }
             mRatingBar.setRating(rating);
@@ -83,7 +84,7 @@ public class EditorActivity extends AppCompatActivity
             mCheckBoxWatched.setChecked(intent.getBooleanExtra(Constants.KEY_IS_WATCHED, false));
 
             // Show picture automatic.
-            if(!url.equals("")) {
+            if (!url.equals("")) {
                 showImageFromUrl(url);
             }
         }
@@ -93,7 +94,7 @@ public class EditorActivity extends AppCompatActivity
     public void buttonEditorOk_onClick(View view) {
         Intent intent = new Intent();
         mSubject = mEditTextSubject.getText().toString().trim();
-        if(mSubject.equals("")) {
+        if (mSubject.equals("")) {
             Toast.makeText(this, R.string.editor_toast_no_subject, Toast.LENGTH_LONG).show();
             return;
         }
@@ -120,14 +121,17 @@ public class EditorActivity extends AppCompatActivity
 
     // Download Image from internet by URL.
     private void showImageFromUrl(String urlAsString) {
-        try {
-            OMDbImageDownloaderAsyncTask downloadingPictureByUrlAsyncTask =
-                new OMDbImageDownloaderAsyncTask(this);
-            URL url = new URL(urlAsString);
-            downloadingPictureByUrlAsyncTask.execute(url);
-        } catch (MalformedURLException e) {
-            mImageViewUrl.setImageResource(R.drawable.android_fragmentation);
-//            Toast.makeText(this, R.string.editor_toast_incorrect_url, Toast.LENGTH_LONG).show();
+        if (Helper.isNetworkAvailable(EditorActivity.this)) {
+            try {
+                OMDbImageDownloaderAsyncTask downloadingPictureByUrlAsyncTask =
+                        new OMDbImageDownloaderAsyncTask(this);
+                URL url = new URL(urlAsString);
+                downloadingPictureByUrlAsyncTask.execute(url);
+            } catch (MalformedURLException e) {
+                mImageViewUrl.setImageResource(R.drawable.android_fragmentation);
+            }
+        } else {
+            Toast.makeText(EditorActivity.this, R.string.no_internet_connection_warning, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -160,7 +164,7 @@ public class EditorActivity extends AppCompatActivity
     // Open new activity with image on full screen
     public void imageViewPoster_onClick(View view) {
         String url = mEditTextUrl.getText().toString().trim();
-        if(!url.equals("")) {
+        if (!url.equals("")) {
             Intent intent = new Intent(this, PosterActivity.class);
             intent.putExtra(Constants.KEY_URL, mEditTextUrl.getText().toString().trim());
             startActivity(intent);
