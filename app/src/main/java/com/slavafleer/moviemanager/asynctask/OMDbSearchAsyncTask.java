@@ -41,9 +41,15 @@ public class OMDbSearchAsyncTask extends AsyncTask<URL, Void, ArrayList<Movie>> 
 
     // Find movies list in internet in new thread.
     protected ArrayList<Movie> doInBackground(URL... params) {
+
+        HttpURLConnection connection = null;
+        InputStream inputStream = null;
+        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
+
         try {
             URL url = params[0];
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection = (HttpURLConnection) url.openConnection();
             mHttpResponseCode = connection.getResponseCode();
 
             if (mHttpResponseCode != HttpURLConnection.HTTP_OK) {
@@ -53,9 +59,9 @@ public class OMDbSearchAsyncTask extends AsyncTask<URL, Void, ArrayList<Movie>> 
                 return null;
             }
 
-            InputStream inputStream = connection.getInputStream();
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            inputStream = connection.getInputStream();
+            inputStreamReader = new InputStreamReader(inputStream);
+            bufferedReader = new BufferedReader(inputStreamReader);
 
             String result = "";
 
@@ -90,11 +96,18 @@ public class OMDbSearchAsyncTask extends AsyncTask<URL, Void, ArrayList<Movie>> 
                 return null;
             }
 
-
         } catch (Exception e) {
             mErrorMessage = "Error: " + e.getMessage();
 
             return null;
+
+        } finally {
+            try {
+                bufferedReader.close();
+                inputStreamReader.close();
+                inputStream.close();
+                connection.disconnect();
+            } catch (Exception e) {}
         }
     }
 

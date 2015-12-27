@@ -29,9 +29,13 @@ public class OMDbImageDownloaderAsyncTask extends AsyncTask<URL, Void, Bitmap> {
 
     // Request for image by url in new thread and download it.
     protected Bitmap doInBackground(URL... params) {
+
+        HttpURLConnection connection = null;
+        InputStream inputStream = null;
+
         try {
             URL url = params[0];
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection = (HttpURLConnection) url.openConnection();
 
             mHttpStatusCode = connection.getResponseCode();
 
@@ -40,7 +44,7 @@ public class OMDbImageDownloaderAsyncTask extends AsyncTask<URL, Void, Bitmap> {
                 return null;
             }
 
-            InputStream inputStream = connection.getInputStream();
+            inputStream = connection.getInputStream();
             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
             // Downloaded Image from given URL.
@@ -48,6 +52,12 @@ public class OMDbImageDownloaderAsyncTask extends AsyncTask<URL, Void, Bitmap> {
         } catch (Exception e) {
             mErrorMessage = e.getMessage();
             return null;
+        } finally {
+            try {
+                inputStream.close();
+                connection.disconnect();
+            } catch (Exception e) {}
+
         }
     }
 
