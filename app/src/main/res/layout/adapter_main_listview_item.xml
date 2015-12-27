@@ -1,17 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout android:id="@+id/linearLaoutItemRoot"
+              xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textViewMainListItemTitle"
-        style="@style/EditTextStyle"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:paddingTop="@dimen/item_vertical_padding"
-        android:paddingBottom="@dimen/item_vertical_padding"
-        android:paddingLeft="@dimen/item_horizontal_padding"/>
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageViewItemPoster"
+            android:layout_width="100dp"
+            android:layout_height="150dp"
+            android:scaleType="fitCenter"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/item_vertical_padding"
+            android:orientation="vertical">
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewMainListItemTitle"
+            style="@style/EditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/imageViewItemPoster"
+            android:layout_toRightOf="@+id/imageViewItemPoster"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:paddingBottom="@dimen/item_vertical_padding"
+            android:paddingLeft="@dimen/item_horizontal_padding"
+            android:paddingTop="@dimen/item_vertical_padding"
+            android:textStyle="bold"/>
+
+        <ProgressBar
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/progressBarItem"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="25dp"
+            android:visibility="invisible"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RatingBar
+            android:id="@+id/ratingBarItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:isIndicator="true"
+            android:stepSize="0.5"/>
+
+        <ImageView
+            android:id="@+id/imageViewItemIsWatched"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@android:drawable/ic_menu_view"/>
+    </LinearLayout>
+
+
 </LinearLayout>

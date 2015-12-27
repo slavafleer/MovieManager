@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#4b5ff5</color>
 
+    <color name="colorLightBlue">#549bff</color>
+
     <!-- Rating Colors -->
     <color name="colorRating1">#af000e</color>
     <color name="colorRating2">#E42100</color>

@@ -1,8 +1,5 @@
 package com.slavafleer.moviemanager;
 
-/**
- * Created by Slava on 03/12/2015.
- */
 public class Constants {
 
     // Activities Keys.
@@ -13,7 +10,6 @@ public class Constants {
     public final static String KEY_POSITION = "position";
     public final static String KEY_RATING = "rating";
     public final static String KEY_IS_WATCHED = "hasWatched";
-    public final static String KEY_BITMAP = "bitmap";
 
     // Activities Values
     public final static String VALUE_NEW_MOVIE = "0";

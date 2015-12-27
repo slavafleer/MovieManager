@@ -1,4 +1,4 @@
-package com.slavafleer.moviemanager.asynctasks;
+package com.slavafleer.moviemanager.asynctask;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * This Async Task searches in OMDb data for wanted movie by id
  * and returning all data for this movie(in Json).
  */
-public class OMDbGetMovieAsyncTask extends AsyncTask<URL, Void, String>  {
+public class OMDbGetMovieAsyncTask extends AsyncTask<URL, Void, String> {
 
     private Activity mActivity;
     private ArrayList<Movie> mMovies;
@@ -39,31 +39,37 @@ public class OMDbGetMovieAsyncTask extends AsyncTask<URL, Void, String>  {
 
     // Find views in parent activity.
     protected void onPreExecute() {
-        mProgressBarSearch = (ProgressBar)mActivity.findViewById(R.id.progressBarSearch);
+        mProgressBarSearch = (ProgressBar) mActivity.findViewById(R.id.progressBarSearch);
         mProgressBarSearch.setVisibility(View.VISIBLE);
     }
 
     // Download rest of chosen movie data in new thread.
     protected String doInBackground(URL... params) {
+
+        HttpURLConnection connection = null;
+        InputStream inputStream = null;
+        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
+
         try {
             URL url = params[0];
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection = (HttpURLConnection) url.openConnection();
             int httpResponseCode = connection.getResponseCode();
 
-            if(httpResponseCode != HttpURLConnection.HTTP_OK) {
+            if (httpResponseCode != HttpURLConnection.HTTP_OK) {
                 return "Error Code: " + httpResponseCode +
                         "\nError Message: " + connection.getResponseMessage();
             }
 
-            InputStream inputStream = connection.getInputStream();
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            inputStream = connection.getInputStream();
+            inputStreamReader = new InputStreamReader(inputStream);
+            bufferedReader = new BufferedReader(inputStreamReader);
 
             String result = "";
 
             String oneLine = bufferedReader.readLine();
 
-            while(oneLine != null) {
+            while (oneLine != null) {
                 result += oneLine + "\n";
                 oneLine = bufferedReader.readLine();
             }
@@ -71,6 +77,14 @@ public class OMDbGetMovieAsyncTask extends AsyncTask<URL, Void, String>  {
             return result;
         } catch (Exception e) {
             return "Error: " + e.getMessage();
+        } finally {
+            try {
+                bufferedReader.close();
+                inputStreamReader.close();
+                inputStream.close();
+                connection.disconnect();
+            } catch (Exception e) {
+            }
         }
     }
 
@@ -79,15 +93,15 @@ public class OMDbGetMovieAsyncTask extends AsyncTask<URL, Void, String>  {
         try {
             JSONObject jsonObject = new JSONObject(result);
             String url = jsonObject.getString(Constants.KEY_OMDB_POSTER);
-            if(url.equals("N/A")) {
+            if (url.equals("N/A")) {
                 url = "";
             }
             String body = jsonObject.getString(Constants.KEY_OMDB_PLOT);
-            if(body.equals("N/A")) {
+            if (body.equals("N/A")) {
                 body = "";
             }
             String rating = jsonObject.getString(Constants.KEY_OMDB_METASCORE);
-            if(rating.equals("N/A")) {
+            if (rating.equals("N/A")) {
                 rating = "0";
             }
 

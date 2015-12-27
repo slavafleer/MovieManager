@@ -13,6 +13,10 @@
     <string name="main_dialog_plus_icon_negative_button_label">Search</string>
     <string name="main_dialog_plus_icon_neutral_button_label">Abort</string>
 
+    <!-- Internet warnings -->
+    <string name="no_internet_connection_warning">There is no internet connection right now.</string>
+
+
     <!-- Main Menu -->
     <string name="menu_main_delete_all_title">Delete All</string>
     <string name="menu_main_exit_title">Exit</string>
