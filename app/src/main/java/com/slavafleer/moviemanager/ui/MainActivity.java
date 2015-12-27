@@ -11,6 +11,8 @@ package com.slavafleer.moviemanager.ui;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView mListViewMovies;
     private TextView mEmptyMainMovieList;
     private MainListAdapter mMainListAdapter;
+    private TextView mTextViewMainTopic;
 
     // On open application create listview, load movie data from file and
     // show it.
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         mListViewMovies = (ListView) findViewById(R.id.listViewMainMovies);
         mEmptyMainMovieList = (TextView) findViewById(R.id.emptyMainMovieList);
+        mTextViewMainTopic = (TextView) findViewById(R.id.textViewMainTopic);
 
         // ListView adapter initialising.
         mMainListAdapter = new MainListAdapter(this, mMovies);
@@ -247,5 +251,18 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // Change TextSize of Topic due to device orientation.
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            mTextViewMainTopic.setTextSize(20f);
+            mTextViewMainTopic.setTypeface(null, Typeface.BOLD);
+        } else {
+            mTextViewMainTopic.setTextSize(30f);
+            mTextViewMainTopic.setTypeface(null, Typeface.NORMAL);
+        }
     }
 }

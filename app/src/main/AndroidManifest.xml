@@ -24,7 +24,6 @@
         <activity
             android:name=".ui.EditorActivity"
             android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
         </activity>
         <activity
