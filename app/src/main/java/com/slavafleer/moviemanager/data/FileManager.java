@@ -83,7 +83,6 @@ public class FileManager {
                 // Take care for multiply line text.
                 String body = "";
                 oneLine = bufferedReader.readLine();
-                body = oneLine + "\n";
                 while (!oneLine.equals(END_OF_TEXT)) {
                     body += oneLine + "\n";
                     oneLine = bufferedReader.readLine();
