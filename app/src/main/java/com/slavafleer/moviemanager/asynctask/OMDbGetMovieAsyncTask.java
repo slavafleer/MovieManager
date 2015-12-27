@@ -45,9 +45,15 @@ public class OMDbGetMovieAsyncTask extends AsyncTask<URL, Void, String>  {
 
     // Download rest of chosen movie data in new thread.
     protected String doInBackground(URL... params) {
+
+        HttpURLConnection connection = null;
+        InputStream inputStream = null;
+        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
+
         try {
             URL url = params[0];
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection = (HttpURLConnection) url.openConnection();
             int httpResponseCode = connection.getResponseCode();
 
             if(httpResponseCode != HttpURLConnection.HTTP_OK) {
@@ -55,9 +61,9 @@ public class OMDbGetMovieAsyncTask extends AsyncTask<URL, Void, String>  {
                         "\nError Message: " + connection.getResponseMessage();
             }
 
-            InputStream inputStream = connection.getInputStream();
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            inputStream = connection.getInputStream();
+            inputStreamReader = new InputStreamReader(inputStream);
+            bufferedReader = new BufferedReader(inputStreamReader);
 
             String result = "";
 
@@ -71,6 +77,13 @@ public class OMDbGetMovieAsyncTask extends AsyncTask<URL, Void, String>  {
             return result;
         } catch (Exception e) {
             return "Error: " + e.getMessage();
+        } finally {
+            try {
+                bufferedReader.close();
+                inputStreamReader.close();
+                inputStream.close();
+                connection.disconnect();
+            } catch (Exception e) {}
         }
     }
 
