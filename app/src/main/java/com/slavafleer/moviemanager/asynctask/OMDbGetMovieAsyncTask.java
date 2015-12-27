@@ -24,19 +24,14 @@ import java.util.ArrayList;
  * This Async Task searches in OMDb data for wanted movie by id
  * and returning all data for this movie(in Json).
  */
-public class OMDbGetMovieAsyncTask extends AsyncTask<Movie, Void, String>  {
-
-    private Callbacks mCallbacks;
+public class OMDbGetMovieAsyncTask extends AsyncTask<URL, Void, String>  {
 
     private Activity mActivity;
     private ArrayList<Movie> mMovies;
     private int mPosition;
     private ProgressBar mProgressBarSearch;
 
-    public OMDbGetMovieAsyncTask(Callbacks callbacks) {
-
-        mCallbacks = callbacks;
-
+    public OMDbGetMovieAsyncTask(Activity activity, ArrayList<Movie> movies, int position) {
         mActivity = activity;
         mMovies = movies;
         mPosition = position;
@@ -49,11 +44,9 @@ public class OMDbGetMovieAsyncTask extends AsyncTask<Movie, Void, String>  {
     }
 
     // Download rest of chosen movie data in new thread.
-    protected String doInBackground(Movie... params) {
+    protected String doInBackground(URL... params) {
         try {
-            Movie movie = params[0];
-            String urlAsString = movie.getUrl();
-            URL url = new URL(urlAsString);
+            URL url = params[0];
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             int httpResponseCode = connection.getResponseCode();
 
@@ -113,13 +106,4 @@ public class OMDbGetMovieAsyncTask extends AsyncTask<Movie, Void, String>  {
         mActivity.finish();
     }
 
-    // Interface for UI callbacks.
-    public interface Callbacks {
-
-        void onAboutToStart();
-
-        void onSuccess(ArrayList<Movie> movies);
-
-        void onError(String errorMessage);
-    }
 }
