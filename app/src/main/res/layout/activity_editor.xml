@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,215 +10,191 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:background="#ffffff"
     tools:context=".ui.EditorActivity">
 
-    <ScrollView
+    <TextView
+        android:id="@+id/textViewSubjectLabel"
+        style="@style/LabelStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/editor_textview_subject_label"/>
+
+    <EditText
+        android:id="@+id/editTextSubjectValue"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textViewSubjectLabel"
+        android:layout_marginLeft="@dimen/view_horizontal_margin"
+        android:layout_toEndOf="@+id/textViewSubjectLabel"
+        android:layout_toRightOf="@+id/textViewSubjectLabel"
+        android:inputType="textShortMessage"
+        android:singleLine="true"
+        />
+
+    <TextView
+        android:id="@+id/textViewBodyLabel"
+        style="@style/LabelStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textViewSubjectLabel"
+        android:layout_marginTop="@dimen/view_vertical_margin"
+        android:text="@string/editor_textview_body_label"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textViewBodyLabel"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="@dimen/view_horizontal_margin"
+            android:layout_weight="5"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textViewSubjectLabel"
-                style="@style/LabelStyle"
+            <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/editTextBodyValue"
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/black_board"
+                    android:padding="@dimen/view_horizontal_margin"/>
+            </ScrollView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <RatingBar
+                android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/editor_textview_subject_label"/>
+                android:stepSize="0.5"/>
 
-            <EditText
-                android:id="@+id/editTextSubjectValue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/textViewSubjectLabel"
-                android:layout_marginLeft="@dimen/view_horizontal_margin"
-                android:layout_toEndOf="@+id/textViewSubjectLabel"
-                android:layout_toRightOf="@+id/textViewSubjectLabel"
-                android:inputType="textShortMessage"
-                android:singleLine="true"/>
-
-            <TextView
-                android:id="@+id/textViewBodyLabel"
-                style="@style/LabelStyle"
+            <CheckBox
+                android:id="@+id/checkBoxWatched"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/textViewSubjectLabel"
-                android:layout_marginTop="@dimen/view_vertical_margin"
-                android:text="@string/editor_textview_body_label"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/textViewBodyLabel"
-                android:orientation="vertical">
+                android:text="@string/editor_checkbox_watched_label"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textViewUrlLabel"
+                    style="@style/LabelStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/buttonShow"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/editor_textview_url_label"/>
+
+                <Button
+                    android:id="@+id/buttonShow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:onClick="buttonShow_onClick"
+                    android:text="@string/editor_button_show_label"/>
+
+                <EditText
+                    android:id="@+id/editTextUrlValue"
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/buttonShow"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="@dimen/view_horizontal_margin"
+                    android:layout_toLeftOf="@+id/buttonShow"
+                    android:layout_toRightOf="@+id/textViewUrlLabel"
+                    android:inputType="textUri"
+                    android:singleLine="true"
+                    />
 
                 <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginLeft="@dimen/view_horizontal_margin"
-                    android:layout_weight="5">
+                    android:id="@+id/centerAnchor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true">
 
-                    <ScrollView
-                        android:id="@+id/scrollView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <EditText
-                            android:id="@+id/editTextBodyValue"
-                            style="@style/EditTextStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/black_board"
-                            android:padding="@dimen/view_horizontal_margin"
-                            android:maxLines="5"/>
-                    </ScrollView>
                 </FrameLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
+                <Button
+                    android:id="@+id/buttonEditorOk"
+                    style="@style/ButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/centerAnchor"
+                    android:layout_gravity="left|bottom"
+                    android:layout_marginRight="1dp"
+                    android:layout_toLeftOf="@+id/centerAnchor"
+                    android:onClick="buttonEditorOk_onClick"
+                    android:text="@string/button_ok_label"/>
 
-                    <RatingBar
-                        android:id="@+id/ratingBar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:stepSize="0.5"/>
+                <Button
+                    android:id="@+id/buttonEditorCancel"
+                    style="@style/ButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/centerAnchor"
+                    android:layout_marginLeft="1dp"
+                    android:layout_toRightOf="@+id/centerAnchor"
+                    android:onClick="buttonEditorCancel_onClick"
+                    android:text="@string/button_cancel_label"/>
 
-                    <CheckBox
-                        android:id="@+id/checkBoxWatched"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="@string/editor_checkbox_watched_label"
-                        android:textStyle="bold"/>
-                </LinearLayout>
+                <ImageView
+                    android:id="@+id/imageViewPoster"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/buttonEditorOk"
+                    android:layout_alignLeft="@+id/editTextUrlValue"
+                    android:layout_below="@+id/editTextUrlValue"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginRight="-32dp"
+                    android:layout_toLeftOf="@+id/buttonShow"
+                    android:onClick="imageViewPoster_onClick"
+                    android:scaleType="fitCenter"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="5"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:id="@+id/textViewUrlLabel"
-                            style="@style/LabelStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/buttonShow"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"
-                            android:gravity="center_vertical"
-                            android:text="@string/editor_textview_url_label"/>
-
-                        <Button
-                            android:id="@+id/buttonShow"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:onClick="buttonShow_onClick"
-                            android:text="@string/editor_button_show_label"/>
-
-                        <EditText
-                            android:id="@+id/editTextUrlValue"
-                            style="@style/EditTextStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/buttonShow"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginLeft="@dimen/view_horizontal_margin"
-                            android:layout_toLeftOf="@+id/buttonShow"
-                            android:layout_toRightOf="@+id/textViewUrlLabel"
-                            android:inputType="textUri"
-                            android:singleLine="true"/>
-
-
-
-
-
-                        <ImageView
-                            android:id="@+id/imageViewPoster"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignLeft="@+id/editTextUrlValue"
-                            android:layout_below="@+id/editTextUrlValue"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginRight="-32dp"
-                            android:layout_toLeftOf="@+id/buttonShow"
-                            android:onClick="imageViewPoster_onClick"
-                            android:scaleType="fitCenter"
-                            tools:src="@drawable/android_error"/>
-
-                        <ProgressBar
-                            android:id="@+id/progressBarPosterDownloading"
-                            style="?android:attr/progressBarStyleLarge"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:visibility="invisible"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <FrameLayout
-                            android:id="@+id/centerAnchor"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerHorizontal="true">
-
-                        </FrameLayout>
-
-                        <Button
-                            android:id="@+id/buttonEditorOk"
-                            style="@style/ButtonStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left|bottom"
-                            android:layout_marginRight="1dp"
-                            android:layout_toLeftOf="@+id/centerAnchor"
-                            android:onClick="buttonEditorOk_onClick"
-                            android:text="@string/button_ok_label"
-                            android:layout_below="@+id/centerAnchor"/>
-
-                        <Button
-                            android:id="@+id/buttonEditorCancel"
-                            style="@style/ButtonStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="1dp"
-                            android:layout_toRightOf="@+id/centerAnchor"
-                            android:onClick="buttonEditorCancel_onClick"
-                            android:text="@string/button_cancel_label"
-                            android:layout_below="@+id/centerAnchor"/>
-
-                    </RelativeLayout>
-                </LinearLayout>
-            </LinearLayout>
+                <ProgressBar
+                    android:id="@+id/progressBarPosterDownloading"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:visibility="invisible"/>
+            </RelativeLayout>
         </LinearLayout>
-    </ScrollView>
-
-
-</FrameLayout>
-
-
+    </LinearLayout>
+</RelativeLayout>
